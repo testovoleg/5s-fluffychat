@@ -66,3 +66,13 @@ Please visit the [Wiki](https://github.com/krille-chan/fluffychat/wiki) for buil
 * <a href="https://github.com/madsrh/WoodenBeaver">WoodenBeaver</a> sound theme for the notification sound.
 
 * The Matrix Foundation for making and maintaining the [emoji translations](https://github.com/matrix-org/matrix-spec/blob/main/data-definitions/sas-emoji.json) used for emoji verification, licensed Apache 2.0
+
+
+
+
+flutter build apk
+flutter build appbundle
+flutter pub get
+flutter pub upgrade
+
+flutter pub add fcm_shared_isolate
