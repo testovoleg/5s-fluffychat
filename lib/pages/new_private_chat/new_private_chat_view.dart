@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 import 'package:fluffychat/config/app_config.dart';
 import 'package:fluffychat/config/themes.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/new_private_chat/new_private_chat.dart';
 import 'package:fluffychat/utils/localized_exception_extension.dart';
 import 'package:fluffychat/utils/platform_infos.dart';
@@ -14,6 +14,7 @@ import 'package:fluffychat/utils/url_launcher.dart';
 import 'package:fluffychat/widgets/avatar.dart';
 import 'package:fluffychat/widgets/layouts/max_width_body.dart';
 import 'package:fluffychat/widgets/matrix.dart';
+import '../../widgets/qr_code_viewer.dart';
 
 class NewPrivateChatView extends StatelessWidget {
   final NewPrivateChatController controller;
@@ -25,6 +26,7 @@ class NewPrivateChatView extends StatelessWidget {
     final theme = Theme.of(context);
 
     final searchResponse = controller.searchResponse;
+    final userId = Matrix.of(context).client.userID!;
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -122,7 +124,7 @@ class NewPrivateChatView extends StatelessWidget {
                         ),
                         style: TextStyle(
                           color: theme.colorScheme.onSurface,
-                          fontSize: 13,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -157,26 +159,40 @@ class NewPrivateChatView extends StatelessWidget {
                       ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(64.0),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 256),
-                          child: Material(
-                            borderRadius: BorderRadius.circular(12),
-                            elevation: 10,
-                            color: Colors.white,
-                            shadowColor: theme.appBarTheme.shadowColor,
-                            clipBehavior: Clip.hardEdge,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 64.0,
+                          vertical: 24.0,
+                        ),
+                        child: Material(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppConfig.borderRadius),
+                            side: BorderSide(
+                              width: 3,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                          color: Colors.transparent,
+                          clipBehavior: Clip.hardEdge,
+                          child: InkWell(
+                            borderRadius:
+                                BorderRadius.circular(AppConfig.borderRadius),
+                            onTap: () => showQrCodeViewer(
+                              context,
+                              userId,
+                            ),
                             child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: PrettyQrView.data(
-                                data:
-                                    'https://matrix.to/#/${Matrix.of(context).client.userID}',
-                                decoration: PrettyQrDecoration(
-                                  shape: PrettyQrSmoothSymbol(
-                                    roundFactor: 1,
-                                    color: theme.brightness == Brightness.light
-                                        ? theme.colorScheme.primary
-                                        : theme.colorScheme.onPrimary,
+                              padding: const EdgeInsets.all(16.0),
+                              child: ConstrainedBox(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 200),
+                                child: PrettyQrView.data(
+                                  data: 'https://matrix.to/#/$userId',
+                                  decoration: PrettyQrDecoration(
+                                    shape: PrettyQrSmoothSymbol(
+                                      roundFactor: 1,
+                                      color: theme.colorScheme.primary,
+                                    ),
                                   ),
                                 ),
                               ),

@@ -3,18 +3,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:http/http.dart';
 import 'package:matrix/encryption.dart';
 import 'package:matrix/matrix.dart';
 
+import 'package:fluffychat/l10n/l10n.dart';
+import 'package:fluffychat/utils/other_party_can_receive.dart';
 import 'uia_request_manager.dart';
 
 extension LocalizedExceptionExtension on Object {
   static String _formatFileSize(int size) {
-    if (size < 1024) return '$size B';
-    final i = (log(size) / log(1024)).floor();
-    final num = (size / pow(1024, i));
+    if (size < 1000) return '$size B';
+    final i = (log(size) / log(1000)).floor();
+    final num = (size / pow(1000, i));
     final round = num.round();
     final numString = round < 10
         ? num.toStringAsFixed(2)
@@ -34,6 +35,9 @@ extension LocalizedExceptionExtension on Object {
         _formatFileSize(exception.maxFileSize),
       );
     }
+    if (this is OtherPartyCanNotReceiveMessages) {
+      return L10n.of(context).otherPartyNotLoggedIn;
+    }
     if (this is MatrixException) {
       switch ((this as MatrixException).error) {
         case MatrixError.M_FORBIDDEN:
@@ -52,24 +56,6 @@ extension LocalizedExceptionExtension on Object {
     }
     if (this is InvalidPassphraseException) {
       return L10n.of(context).wrongRecoveryKey;
-    }
-    if (this is BadServerVersionsException) {
-      final serverVersions = (this as BadServerVersionsException)
-          .serverVersions
-          .toString()
-          .replaceAll('{', '"')
-          .replaceAll('}', '"');
-      final supportedVersions = (this as BadServerVersionsException)
-          .supportedVersions
-          .toString()
-          .replaceAll('{', '"')
-          .replaceAll('}', '"');
-      return L10n.of(context).badServerVersionsException(
-        serverVersions,
-        supportedVersions,
-        serverVersions,
-        supportedVersions,
-      );
     }
     if (this is BadServerLoginTypesException) {
       final serverVersions = (this as BadServerLoginTypesException)

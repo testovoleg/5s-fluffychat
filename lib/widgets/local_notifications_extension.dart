@@ -3,16 +3,19 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:collection/collection.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:go_router/go_router.dart';
+import 'package:image/image.dart';
 import 'package:matrix/matrix.dart';
 import 'package:universal_html/html.dart' as html;
 
 import 'package:fluffychat/config/app_config.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/utils/client_download_content_extension.dart';
 import 'package:fluffychat/utils/matrix_sdk_extensions/matrix_locals.dart';
 import 'package:fluffychat/utils/platform_infos.dart';
+import 'package:fluffychat/utils/push_helper.dart';
+import 'package:fluffychat/widgets/fluffy_chat_app.dart';
 import 'package:fluffychat/widgets/matrix.dart';
 
 extension LocalNotificationsExtension on MatrixState {
@@ -20,8 +23,8 @@ extension LocalNotificationsExtension on MatrixState {
     ..src = 'assets/assets/sounds/notification.ogg'
     ..load();
 
-  void showLocalNotification(EventUpdate eventUpdate) async {
-    final roomId = eventUpdate.roomID;
+  void showLocalNotification(Event event) async {
+    final roomId = event.room.id;
     if (activeRoomId == roomId) {
       if (kIsWeb && webHasFocus) return;
       if (PlatformInfos.isDesktop &&
@@ -29,19 +32,13 @@ extension LocalNotificationsExtension on MatrixState {
         return;
       }
     }
-    final room = client.getRoomById(roomId);
-    if (room == null) {
-      Logs().w('Can not display notification for unknown room $roomId');
-      return;
-    }
-    if (room.notificationCount == 0) return;
 
-    final event = Event.fromJson(eventUpdate.content, room);
-    final title = room.getLocalizedDisplayname(MatrixLocals(L10n.of(context)));
+    final title =
+        event.room.getLocalizedDisplayname(MatrixLocals(L10n.of(context)));
     final body = await event.calcLocalizedBody(
       MatrixLocals(L10n.of(context)),
-      withSenderNamePrefix:
-          !room.isDirectChat || room.lastEvent?.senderId == client.userID,
+      withSenderNamePrefix: !event.room.isDirectChat ||
+          event.room.lastEvent?.senderId == client.userID,
       plaintextBody: true,
       hideReply: true,
       hideEdit: true,
@@ -53,7 +50,7 @@ extension LocalNotificationsExtension on MatrixState {
       Uri? thumbnailUri;
 
       if (avatarUrl != null) {
-        const size = 64;
+        const size = 128;
         const thumbnailMethod = ThumbnailMethod.crop;
         // Pre-cache so that we can later just set the thumbnail uri as icon:
         await client.downloadMxcCached(
@@ -62,6 +59,7 @@ extension LocalNotificationsExtension on MatrixState {
           height: size,
           thumbnailMethod: thumbnailMethod,
           isThumbnail: true,
+          rounded: true,
         );
 
         thumbnailUri =
@@ -82,6 +80,36 @@ extension LocalNotificationsExtension on MatrixState {
         tag: event.room.id,
       );
     } else if (Platform.isLinux) {
+      final avatarUrl = event.room.avatar;
+      final hints = [NotificationHint.soundName('message-new-instant')];
+
+      if (avatarUrl != null) {
+        const size = notificationAvatarDimension;
+        const thumbnailMethod = ThumbnailMethod.crop;
+        // Pre-cache so that we can later just set the thumbnail uri as icon:
+        final data = await client.downloadMxcCached(
+          avatarUrl,
+          width: size,
+          height: size,
+          thumbnailMethod: thumbnailMethod,
+          isThumbnail: true,
+          rounded: true,
+        );
+
+        final image = decodeImage(data);
+        if (image != null) {
+          final realData = image.getBytes(order: ChannelOrder.rgba);
+          hints.add(
+            NotificationHint.imageData(
+              image.width,
+              image.height,
+              realData,
+              hasAlpha: true,
+              channels: 4,
+            ),
+          );
+        }
+      }
       final notification = await linuxNotifications!.notify(
         title,
         body: body,
@@ -98,23 +126,24 @@ extension LocalNotificationsExtension on MatrixState {
             L10n.of(context).markAsRead,
           ),
         ],
-        hints: [
-          NotificationHint.soundName('message-new-instant'),
-        ],
+        hints: hints,
       );
       notification.action.then((actionStr) {
-        final action = DesktopNotificationActions.values
-            .singleWhere((a) => a.name == actionStr);
-        switch (action) {
+        var action = DesktopNotificationActions.values
+            .singleWhereOrNull((a) => a.name == actionStr);
+        if (action == null && actionStr == "default") {
+          action = DesktopNotificationActions.openChat;
+        }
+        switch (action!) {
           case DesktopNotificationActions.seen:
-            room.setReadMarker(
+            event.room.setReadMarker(
               event.eventId,
               mRead: event.eventId,
               public: AppConfig.sendPublicReadReceipts,
             );
             break;
           case DesktopNotificationActions.openChat:
-            context.go('/rooms/${room.id}');
+            FluffyChatApp.router.go('/rooms/${event.room.id}');
             break;
         }
       });

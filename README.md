@@ -6,7 +6,7 @@
 
 - 🌐 [[Weblate] Translate FluffyChat into your language](https://hosted.weblate.org/projects/fluffychat/)
 - 🌍 [[m] Join the community](https://matrix.to/#/#fluffychat:matrix.org)
-- 📰 [[Mastodon] Get updates on social media](https://mastodon.art/@krille)
+- 📰 [[Mastodon] Get updates on social media](https://troet.cafe/@krille)
 - 🖥️ [[Famedly] Server hosting and professional support](https://famedly.com/kontakt)
 - 💝 [[Liberapay] Support FluffyChat development](https://de.liberapay.com/KrilleChritzelius)
 
@@ -14,7 +14,8 @@
 
 ### Screenshots:
 
-![Screenshot](https://github.com/krille-chan/fluffychat/blob/main/docs/screenshots/product.jpeg?raw=true)
+<img src="https://github.com/krille-chan/fluffychat/blob/main/docs/screenshots/mobile.png?raw=true" height="300">
+<img src="https://github.com/krille-chan/fluffychat/blob/main/docs/screenshots/desktop.png?raw=true" height="300">
 
 # Features
 
@@ -61,8 +62,6 @@ Please visit the [Wiki](https://github.com/krille-chan/fluffychat/wiki) for buil
 * Thanks to MTRNord and Sorunome for developing.
 
 * Also thanks to all translators and testers! With your help, fluffychat is now available in more than 12 languages.
-
-* <a href="https://github.com/googlefonts/noto-emoji/">Noto Emoji Font</a> for the awesome emojis.
 
 * <a href="https://github.com/madsrh/WoodenBeaver">WoodenBeaver</a> sound theme for the notification sound.
 

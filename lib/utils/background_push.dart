@@ -24,14 +24,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app_badger/flutter_app_badger.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_new_badger/flutter_new_badger.dart';
 import 'package:http/http.dart' as http;
 import 'package:matrix/matrix.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 import 'package:unifiedpush_ui/unifiedpush_ui.dart';
 
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/utils/push_helper.dart';
 import 'package:fluffychat/widgets/fluffy_chat_app.dart';
 import '../config/app_config.dart';
@@ -39,7 +39,7 @@ import '../config/setting_keys.dart';
 import '../widgets/matrix.dart';
 import 'platform_infos.dart';
 
-import 'package:fcm_shared_isolate/fcm_shared_isolate.dart';
+//<GOOGLE_SERVICES>import 'package:fcm_shared_isolate/fcm_shared_isolate.dart';
 
 class NoTokenException implements Exception {
   String get cause => 'Cannot get firebase token';
@@ -64,7 +64,7 @@ class BackgroundPush {
 
   final pendingTests = <String, Completer<void>>{};
 
-  final dynamic firebase = FcmSharedIsolate();
+  //<GOOGLE_SERVICES>final firebase = FcmSharedIsolate();
 
   DateTime? lastReceivedPush;
 
@@ -80,21 +80,21 @@ class BackgroundPush {
         onDidReceiveNotificationResponse: goToRoom,
       );
       Logs().v('Flutter Local Notifications initialized');
-      firebase?.setListeners(
-        onMessage: (message) => pushHelper(
-          PushNotification.fromJson(
-            Map<String, dynamic>.from(message['data'] ?? message),
-          ),
-          client: client,
-          l10n: l10n,
-          activeRoomId: matrix?.activeRoomId,
-          flutterLocalNotificationsPlugin: _flutterLocalNotificationsPlugin,
-        ),
-      );
+      //<GOOGLE_SERVICES>firebase.setListeners(
+      //<GOOGLE_SERVICES>  onMessage: (message) => pushHelper(
+      //<GOOGLE_SERVICES>    PushNotification.fromJson(
+      //<GOOGLE_SERVICES>      Map<String, dynamic>.from(message['data'] ?? message),
+      //<GOOGLE_SERVICES>    ),
+      //<GOOGLE_SERVICES>    client: client,
+      //<GOOGLE_SERVICES>    l10n: l10n,
+      //<GOOGLE_SERVICES>    activeRoomId: matrix?.activeRoomId,
+      //<GOOGLE_SERVICES>    flutterLocalNotificationsPlugin: _flutterLocalNotificationsPlugin,
+      //<GOOGLE_SERVICES>  ),
+      //<GOOGLE_SERVICES>);
       if (Platform.isAndroid) {
         await UnifiedPush.initialize(
           onNewEndpoint: _newUpEndpoint,
-          onRegistrationFailed: _upUnregistered,
+          onRegistrationFailed: (_, i) => _upUnregistered(i),
           onUnregistered: _upUnregistered,
           onMessage: _onUpMessage,
         );
@@ -133,9 +133,9 @@ class BackgroundPush {
           .where((room) => room.isUnreadOrInvited && room.id != roomId)
           .length;
       if (unreadCount == 0) {
-        FlutterAppBadger.removeBadge();
+        FlutterNewBadger.removeBadge();
       } else {
-        FlutterAppBadger.updateBadgeCount(unreadCount);
+        FlutterNewBadger.setBadge(unreadCount);
       }
       return;
     }
@@ -148,8 +148,9 @@ class BackgroundPush {
     bool useDeviceSpecificAppId = false,
   }) async {
     if (PlatformInfos.isIOS) {
-      await firebase?.requestPermission();
-    } else if (PlatformInfos.isAndroid) {
+      //<GOOGLE_SERVICES>await firebase.requestPermission();
+    }
+    if (PlatformInfos.isAndroid) {
       _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
@@ -186,7 +187,8 @@ class BackgroundPush {
           currentPushers.first.lang == 'en' &&
           currentPushers.first.data.url.toString() == gatewayUrl &&
           currentPushers.first.data.format ==
-              AppConfig.pushNotificationsPusherFormat &&
+              AppSettings.pushNotificationsPusherFormat
+                  .getItem(matrix!.store) &&
           mapEquals(
             currentPushers.single.data.additionalProperties,
             {"data_message": pusherDataMessageFormat},
@@ -228,7 +230,8 @@ class BackgroundPush {
             lang: 'en',
             data: PusherData(
               url: Uri.parse(gatewayUrl!),
-              format: AppConfig.pushNotificationsPusherFormat,
+              format: AppSettings.pushNotificationsPusherFormat
+                  .getItem(matrix!.store),
               additionalProperties: {"data_message": pusherDataMessageFormat},
             ),
             kind: 'http',
@@ -308,8 +311,7 @@ class BackgroundPush {
     Logs().v('Setup firebase');
     if (_fcmToken?.isEmpty ?? true) {
       try {
-        _fcmToken = await firebase?.getToken();
-        Logs().w('[Push] token $_fcmToken');
+        //<GOOGLE_SERVICES>_fcmToken = await firebase.getToken();
         if (_fcmToken == null) throw ('PushToken is null');
       } catch (e, s) {
         Logs().w('[Push] cannot get token', e, e is String ? null : s);
@@ -318,7 +320,8 @@ class BackgroundPush {
       }
     }
     await setupPusher(
-      gatewayUrl: AppConfig.pushNotificationsGatewayUrl,
+      gatewayUrl:
+          AppSettings.pushNotificationsGatewayUrl.getItem(matrix!.store),
       token: _fcmToken,
     );
   }
@@ -352,7 +355,8 @@ class BackgroundPush {
         .registerAppWithDialog();
   }
 
-  Future<void> _newUpEndpoint(String newEndpoint, String i) async {
+  Future<void> _newUpEndpoint(PushEndpoint newPushEndpoint, String i) async {
+    final newEndpoint = newPushEndpoint.url;
     upAction = true;
     if (newEndpoint.isEmpty) {
       await _upUnregistered(i);
@@ -384,8 +388,8 @@ class BackgroundPush {
     Logs().i('[Push] UnifiedPush using endpoint $endpoint');
     final oldTokens = <String?>{};
     try {
-      final fcmToken = await firebase?.getToken();
-      oldTokens.add(fcmToken);
+      //<GOOGLE_SERVICES>final fcmToken = await firebase.getToken();
+      //<GOOGLE_SERVICES>oldTokens.add(fcmToken);
     } catch (_) {}
     await setupPusher(
       gatewayUrl: endpoint,
@@ -412,7 +416,8 @@ class BackgroundPush {
     }
   }
 
-  Future<void> _onUpMessage(Uint8List message, String i) async {
+  Future<void> _onUpMessage(PushMessage pushMessage, String i) async {
+    final message = pushMessage.content;
     upAction = true;
     final data = Map<String, dynamic>.from(
       json.decode(utf8.decode(message))['notification'],
@@ -430,7 +435,10 @@ class BackgroundPush {
 }
 
 class UPFunctions extends UnifiedPushFunctions {
-  final List<String> features = [/*list of features*/];
+  final List<String> features = [
+    /*list of features*/
+  ];
+
   @override
   Future<String?> getDistributor() async {
     return await UnifiedPush.getDistributor();
@@ -443,7 +451,7 @@ class UPFunctions extends UnifiedPushFunctions {
 
   @override
   Future<void> registerApp(String instance) async {
-    await UnifiedPush.registerApp(instance, features);
+    await UnifiedPush.register(instance: instance, features: features);
   }
 
   @override

@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:matrix/matrix.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'package:fluffychat/config/themes.dart';
@@ -8,14 +8,13 @@ import 'package:fluffychat/pages/chat/chat.dart';
 import 'package:fluffychat/pages/chat/events/message.dart';
 import 'package:fluffychat/pages/chat/seen_by_row.dart';
 import 'package:fluffychat/pages/chat/typing_indicators.dart';
-import 'package:fluffychat/pages/user_bottom_sheet/user_bottom_sheet.dart';
 import 'package:fluffychat/utils/account_config.dart';
-import 'package:fluffychat/utils/adaptive_bottom_sheet.dart';
 import 'package:fluffychat/utils/matrix_sdk_extensions/filtered_timeline_extension.dart';
 import 'package:fluffychat/utils/platform_infos.dart';
 
 class ChatEventList extends StatelessWidget {
   final ChatController controller;
+
   const ChatEventList({
     super.key,
     required this.controller,
@@ -24,13 +23,16 @@ class ChatEventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeline = controller.timeline;
+
     if (timeline == null) {
-      return const Center(
-        child: CircularProgressIndicator.adaptive(
-          strokeWidth: 2,
-        ),
-      );
+      return const Center(child: CupertinoActivityIndicator());
     }
+    final theme = Theme.of(context);
+
+    final colors = [
+      theme.secondaryBubbleColor,
+      theme.bubbleColor,
+    ];
 
     final horizontalPadding = FluffyThemes.isColumnMode(context) ? 8.0 : 0.0;
 
@@ -117,6 +119,17 @@ class ChatEventList extends StatelessWidget {
                 timeline.events.length > animateInEventIndex &&
                 event == timeline.events[animateInEventIndex];
 
+            final nextEvent = i + 1 < events.length ? events[i + 1] : null;
+            final previousEvent = i > 0 ? events[i - 1] : null;
+
+            // Collapsed state event
+            final canExpand = event.isCollapsedState &&
+                nextEvent?.isCollapsedState == true &&
+                previousEvent?.isCollapsedState != true;
+            final isCollapsed = event.isCollapsedState &&
+                previousEvent?.isCollapsedState == true &&
+                !controller.expandedEventIds.contains(event.eventId);
+
             return AutoScrollTag(
               key: ValueKey(event.eventId),
               index: i,
@@ -129,15 +142,8 @@ class ChatEventList extends StatelessWidget {
                 },
                 onSwipe: () => controller.replyAction(replyTo: event),
                 onInfoTab: controller.showEventInfo,
-                onAvatarTab: (Event event) => showAdaptiveBottomSheet(
-                  context: context,
-                  builder: (c) => UserBottomSheet(
-                    user: event.senderFromMemoryOrFallback,
-                    outerContext: context,
-                    onMention: () => controller.sendController.text +=
-                        '${event.senderFromMemoryOrFallback.mention} ',
-                  ),
-                ),
+                onMention: () => controller.sendController.text +=
+                    '${event.senderFromMemoryOrFallback.mention} ',
                 highlightMarker:
                     controller.scrollToEventIdMarker == event.eventId,
                 onSelect: controller.onSelectMessage,
@@ -146,12 +152,25 @@ class ChatEventList extends StatelessWidget {
                 longPressSelect: controller.selectedEvents.isNotEmpty,
                 selected: controller.selectedEvents
                     .any((e) => e.eventId == event.eventId),
+                singleSelected:
+                    controller.selectedEvents.singleOrNull?.eventId ==
+                        event.eventId,
+                onEdit: () => controller.editSelectedEventAction(),
                 timeline: timeline,
                 displayReadMarker:
                     i > 0 && controller.readMarkerEventId == event.eventId,
-                nextEvent: i + 1 < events.length ? events[i + 1] : null,
-                previousEvent: i > 0 ? events[i - 1] : null,
+                nextEvent: nextEvent,
+                previousEvent: previousEvent,
                 wallpaperMode: hasWallpaper,
+                scrollController: controller.scrollController,
+                colors: colors,
+                isCollapsed: isCollapsed,
+                onExpand: canExpand
+                    ? () => controller.expandEventsFrom(
+                          event,
+                          !controller.expandedEventIds.contains(event.eventId),
+                        )
+                    : null,
               ),
             );
           },

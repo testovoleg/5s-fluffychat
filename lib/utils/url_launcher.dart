@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart';
 import 'package:punycode/punycode.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:fluffychat/config/app_config.dart';
-import 'package:fluffychat/pages/user_bottom_sheet/user_bottom_sheet.dart';
-import 'package:fluffychat/utils/adaptive_bottom_sheet.dart';
+import 'package:fluffychat/l10n/l10n.dart';
+import 'package:fluffychat/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
+import 'package:fluffychat/widgets/adaptive_dialogs/user_dialog.dart';
 import 'package:fluffychat/widgets/future_loading_dialog.dart';
 import 'package:fluffychat/widgets/matrix.dart';
-import 'package:fluffychat/widgets/public_room_bottom_sheet.dart';
+import '../widgets/adaptive_dialogs/public_room_dialog.dart';
 import 'platform_infos.dart';
 
 class UrlLauncher {
@@ -51,7 +50,7 @@ class UrlLauncher {
         context: context,
         title: L10n.of(context).openLinkInBrowser,
         message: url,
-        okLabel: L10n.of(context).yes,
+        okLabel: L10n.of(context).open,
         cancelLabel: L10n.of(context).cancel,
       );
       if (consent != OkCancelResult.ok) return;
@@ -179,11 +178,10 @@ class UrlLauncher {
         }
         return;
       } else {
-        await showAdaptiveBottomSheet(
+        await showAdaptiveDialog(
           context: context,
-          builder: (c) => PublicRoomBottomSheet(
+          builder: (c) => PublicRoomDialog(
             roomAlias: identityParts.primaryIdentifier,
-            outerContext: context,
           ),
         );
       }
@@ -221,12 +219,21 @@ class UrlLauncher {
         }
       }
     } else if (identityParts.primaryIdentifier.sigil == '@') {
-      await showAdaptiveBottomSheet(
+      final userId = identityParts.primaryIdentifier;
+      var noProfileWarning = false;
+      final profileResult = await showFutureLoadingDialog(
         context: context,
-        builder: (c) => LoadProfileBottomSheet(
-          userId: identityParts.primaryIdentifier,
-          outerContext: context,
+        future: () => matrix.client.getProfileFromUserId(userId).catchError(
+          (_) {
+            noProfileWarning = true;
+            return Profile(userId: userId);
+          },
         ),
+      );
+      await UserDialog.show(
+        context: context,
+        profile: profileResult.result!,
+        noProfileWarning: noProfileWarning,
       );
     }
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:matrix/matrix.dart';
 
 import 'package:fluffychat/config/themes.dart';
 import 'package:fluffychat/pages/archive/archive.dart';
@@ -31,6 +32,7 @@ import 'package:fluffychat/pages/settings_notifications/settings_notifications.d
 import 'package:fluffychat/pages/settings_password/settings_password.dart';
 import 'package:fluffychat/pages/settings_security/settings_security.dart';
 import 'package:fluffychat/pages/settings_style/settings_style.dart';
+import 'package:fluffychat/widgets/config_viewer.dart';
 import 'package:fluffychat/widgets/layouts/empty_page.dart';
 import 'package:fluffychat/widgets/layouts/two_column_layout.dart';
 import 'package:fluffychat/widgets/log_view.dart';
@@ -42,13 +44,17 @@ abstract class AppRoutes {
     BuildContext context,
     GoRouterState state,
   ) =>
-      Matrix.of(context).client.isLogged() ? '/rooms' : null;
+      Matrix.of(context).widget.clients.any((client) => client.isLogged())
+          ? '/rooms'
+          : null;
 
   static FutureOr<String?> loggedOutRedirect(
     BuildContext context,
     GoRouterState state,
   ) =>
-      Matrix.of(context).client.isLogged() ? null : '/home';
+      Matrix.of(context).widget.clients.any((client) => client.isLogged())
+          ? null
+          : '/home';
 
   AppRoutes();
 
@@ -56,7 +62,9 @@ abstract class AppRoutes {
     GoRoute(
       path: '/',
       redirect: (context, state) =>
-          Matrix.of(context).client.isLogged() ? '/rooms' : '/home',
+          Matrix.of(context).widget.clients.any((client) => client.isLogged())
+              ? '/rooms'
+              : '/home',
     ),
     GoRoute(
       path: '/home',
@@ -72,7 +80,7 @@ abstract class AppRoutes {
           pageBuilder: (context, state) => defaultPageBuilder(
             context,
             state,
-            const Login(),
+            Login(client: state.extra as Client),
           ),
           redirect: loggedInRedirect,
         ),
@@ -86,15 +94,24 @@ abstract class AppRoutes {
         const LogViewer(),
       ),
     ),
+    GoRoute(
+      path: '/configs',
+      pageBuilder: (context, state) => defaultPageBuilder(
+        context,
+        state,
+        const ConfigViewer(),
+      ),
+    ),
     ShellRoute(
-      pageBuilder: (context, state, child) => defaultPageBuilder(
+      // Never use a transition on the shell route. Changing the PageBuilder
+      // here based on a MediaQuery causes the child to briefly be rendered
+      // twice with the same GlobalKey, blowing up the rendering.
+      pageBuilder: (context, state, child) => noTransitionPageBuilder(
         context,
         state,
         FluffyThemes.isColumnMode(context) &&
                 state.fullPath?.startsWith('/rooms/settings') == false
             ? TwoColumnLayout(
-                displayNavigationRail:
-                    state.path?.startsWith('/rooms/settings') != true,
                 mainView: ChatList(
                   activeChat: state.pathParameters['roomid'],
                   displayNavigationRail:
@@ -174,9 +191,8 @@ abstract class AppRoutes {
                 state,
                 FluffyThemes.isColumnMode(context)
                     ? TwoColumnLayout(
-                        mainView: const Settings(),
+                        mainView: Settings(key: state.pageKey),
                         sideView: child,
-                        displayNavigationRail: false,
                       )
                     : child,
               ),
@@ -251,7 +267,7 @@ abstract class AppRoutes {
                           pageBuilder: (context, state) => defaultPageBuilder(
                             context,
                             state,
-                            const Login(),
+                            Login(client: state.extra as Client),
                           ),
                           redirect: loggedOutRedirect,
                         ),
@@ -461,17 +477,24 @@ abstract class AppRoutes {
     ),
   ];
 
+  static Page noTransitionPageBuilder(
+    BuildContext context,
+    GoRouterState state,
+    Widget child,
+  ) =>
+      NoTransitionPage(
+        key: state.pageKey,
+        restorationId: state.pageKey.value,
+        child: child,
+      );
+
   static Page defaultPageBuilder(
     BuildContext context,
     GoRouterState state,
     Widget child,
   ) =>
       FluffyThemes.isColumnMode(context)
-          ? NoTransitionPage(
-              key: state.pageKey,
-              restorationId: state.pageKey.value,
-              child: child,
-            )
+          ? noTransitionPageBuilder(context, state, child)
           : MaterialPage(
               key: state.pageKey,
               restorationId: state.pageKey.value,

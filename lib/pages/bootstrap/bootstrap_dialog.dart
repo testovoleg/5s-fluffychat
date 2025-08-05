@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:matrix/encryption.dart';
 import 'package:matrix/matrix.dart';
 
 import 'package:fluffychat/config/themes.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/utils/error_reporter.dart';
 import 'package:fluffychat/utils/fluffy_share.dart';
 import 'package:fluffychat/utils/localized_exception_extension.dart';
 import 'package:fluffychat/utils/platform_infos.dart';
+import 'package:fluffychat/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
 import 'package:fluffychat/widgets/future_loading_dialog.dart';
 import '../../utils/adaptive_bottom_sheet.dart';
 import '../key_verification/key_verification_dialog.dart';
@@ -18,6 +18,7 @@ import '../key_verification/key_verification_dialog.dart';
 class BootstrapDialog extends StatefulWidget {
   final bool wipe;
   final Client client;
+
   const BootstrapDialog({
     super.key,
     this.wipe = false,
@@ -27,7 +28,6 @@ class BootstrapDialog extends StatefulWidget {
   Future<bool?> show(BuildContext context) => showAdaptiveBottomSheet(
         context: context,
         builder: (context) => this,
-        maxHeight: 600,
       );
 
   @override
@@ -275,6 +275,7 @@ class BootstrapDialogState extends State<BootstrapDialog> {
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: theme.colorScheme.onPrimary,
+                        iconColor: theme.colorScheme.onPrimary,
                         backgroundColor: theme.colorScheme.primary,
                       ),
                       icon: _recoveryKeyInputLoading
@@ -366,7 +367,6 @@ class BootstrapDialogState extends State<BootstrapDialog> {
                                     .verifyOtherDeviceDescription,
                                 okLabel: L10n.of(context).ok,
                                 cancelLabel: L10n.of(context).cancel,
-                                fullyCapitalizedForMaterial: false,
                               );
                               if (consent != OkCancelResult.ok) return;
                               final req = await showFutureLoadingDialog(
@@ -390,6 +390,7 @@ class BootstrapDialogState extends State<BootstrapDialog> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.errorContainer,
                         foregroundColor: theme.colorScheme.onErrorContainer,
+                        iconColor: theme.colorScheme.onErrorContainer,
                       ),
                       icon: const Icon(Icons.delete_outlined),
                       label: Text(L10n.of(context).recoveryKeyLost),
@@ -404,7 +405,7 @@ class BootstrapDialogState extends State<BootstrapDialog> {
                                     message: L10n.of(context).wipeChatBackup,
                                     okLabel: L10n.of(context).ok,
                                     cancelLabel: L10n.of(context).cancel,
-                                    isDestructiveAction: true,
+                                    isDestructive: true,
                                   )) {
                                 setState(() => _createBootstrap(true));
                               }
@@ -444,7 +445,7 @@ class BootstrapDialogState extends State<BootstrapDialog> {
           titleText = L10n.of(context).oopsSomethingWentWrong;
           body = const Icon(Icons.error_outline, color: Colors.red, size: 80);
           buttons.add(
-            OutlinedButton(
+            ElevatedButton(
               onPressed: () =>
                   Navigator.of(context, rootNavigator: false).pop<bool>(false),
               child: Text(L10n.of(context).close),
@@ -470,7 +471,7 @@ class BootstrapDialogState extends State<BootstrapDialog> {
             ],
           );
           buttons.add(
-            OutlinedButton(
+            ElevatedButton(
               onPressed: () =>
                   Navigator.of(context, rootNavigator: false).pop<bool>(false),
               child: Text(L10n.of(context).close),
@@ -491,13 +492,17 @@ class BootstrapDialogState extends State<BootstrapDialog> {
         title: Text(titleText ?? L10n.of(context).loadingPleaseWait),
       ),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            body,
-            const SizedBox(height: 8),
-            ...buttons,
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              body,
+              const SizedBox(height: 8),
+              ...buttons,
+            ],
+          ),
         ),
       ),
     );
