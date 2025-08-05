@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart';
 
-import 'package:fluffychat/config/app_config.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/chat_details/chat_details.dart';
 import 'package:fluffychat/pages/chat_details/participant_list_item.dart';
 import 'package:fluffychat/utils/fluffy_share.dart';
@@ -15,6 +14,8 @@ import 'package:fluffychat/widgets/chat_settings_popup_menu.dart';
 import 'package:fluffychat/widgets/layouts/max_width_body.dart';
 import 'package:fluffychat/widgets/matrix.dart';
 import '../../utils/url_launcher.dart';
+import '../../widgets/mxc_image_viewer.dart';
+import '../../widgets/qr_code_viewer.dart';
 
 class ChatDetailsView extends StatelessWidget {
   final ChatDetailsController controller;
@@ -36,6 +37,9 @@ class ChatDetailsView extends StatelessWidget {
         ),
       );
     }
+
+    final directChatMatrixID = room.directChatMatrixID;
+    final roomAvatar = room.avatar;
 
     return StreamBuilder(
       stream: room.client.onRoomState.stream
@@ -60,10 +64,19 @@ class ChatDetailsView extends StatelessWidget {
               if (room.canonicalAlias.isNotEmpty)
                 IconButton(
                   tooltip: L10n.of(context).share,
-                  icon: Icon(Icons.adaptive.share_outlined),
-                  onPressed: () => FluffyShare.share(
-                    AppConfig.inviteLinkPrefix + room.canonicalAlias,
+                  icon: const Icon(Icons.qr_code_rounded),
+                  onPressed: () => showQrCodeViewer(
                     context,
+                    room.canonicalAlias,
+                  ),
+                )
+              else if (directChatMatrixID != null)
+                IconButton(
+                  tooltip: L10n.of(context).share,
+                  icon: const Icon(Icons.qr_code_rounded),
+                  onPressed: () => showQrCodeViewer(
+                    context,
+                    directChatMatrixID,
                   ),
                 ),
               if (controller.widget.embeddedCloseButton == null)
@@ -97,6 +110,13 @@ class ChatDetailsView extends StatelessWidget {
                                       mxContent: room.avatar,
                                       name: displayname,
                                       size: Avatar.defaultSize * 2.5,
+                                      onTap: roomAvatar != null
+                                          ? () => showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    MxcImageViewer(roomAvatar),
+                                              )
+                                          : null,
                                     ),
                                   ),
                                   if (!room.isDirectChat &&
@@ -147,6 +167,7 @@ class ChatDetailsView extends StatelessWidget {
                                     style: TextButton.styleFrom(
                                       foregroundColor:
                                           theme.colorScheme.onSurface,
+                                      iconColor: theme.colorScheme.onSurface,
                                     ),
                                     label: Text(
                                       room.isDirectChat
@@ -170,6 +191,7 @@ class ChatDetailsView extends StatelessWidget {
                                     style: TextButton.styleFrom(
                                       foregroundColor:
                                           theme.colorScheme.secondary,
+                                      iconColor: theme.colorScheme.secondary,
                                     ),
                                     label: Text(
                                       L10n.of(context).countParticipants(
@@ -204,6 +226,8 @@ class ChatDetailsView extends StatelessWidget {
                               label: Text(L10n.of(context).setChatDescription),
                               icon: const Icon(Icons.edit_outlined),
                               style: TextButton.styleFrom(
+                                iconColor:
+                                    theme.colorScheme.onSecondaryContainer,
                                 backgroundColor:
                                     theme.colorScheme.secondaryContainer,
                                 foregroundColor:
@@ -219,6 +243,8 @@ class ChatDetailsView extends StatelessWidget {
                             text: room.topic.isEmpty
                                 ? L10n.of(context).noChatDescriptionYet
                                 : room.topic,
+                            textScaleFactor:
+                                MediaQuery.textScalerOf(context).scale(1),
                             options: const LinkifyOptions(humanize: false),
                             linkStyle: const TextStyle(
                               color: Colors.blueAccent,
@@ -290,7 +316,7 @@ class ChatDetailsView extends StatelessWidget {
                         ListTile(
                           title: Text(
                             L10n.of(context).countParticipants(
-                              actualMembersCount.toString(),
+                              actualMembersCount,
                             ),
                             style: TextStyle(
                               color: theme.colorScheme.secondary,
@@ -319,7 +345,7 @@ class ChatDetailsView extends StatelessWidget {
                       : ListTile(
                           title: Text(
                             L10n.of(context).loadCountMoreParticipants(
-                              (actualMembersCount - members.length).toString(),
+                              (actualMembersCount - members.length),
                             ),
                           ),
                           leading: CircleAvatar(

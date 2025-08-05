@@ -3,13 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 
 import 'package:fluffychat/config/setting_keys.dart';
 import 'package:fluffychat/config/themes.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/chat/events/state_message.dart';
 import 'package:fluffychat/utils/account_config.dart';
+import 'package:fluffychat/utils/color_value.dart';
 import 'package:fluffychat/widgets/avatar.dart';
 import 'package:fluffychat/widgets/layouts/max_width_body.dart';
 import 'package:fluffychat/widgets/matrix.dart';
@@ -31,7 +32,8 @@ class SettingsStyleView extends StatelessWidget {
     final client = Matrix.of(context).client;
     return Scaffold(
       appBar: AppBar(
-        leading: const Center(child: BackButton()),
+        automaticallyImplyLeading: !FluffyThemes.isColumnMode(context),
+        centerTitle: FluffyThemes.isColumnMode(context),
         title: Text(L10n.of(context).changeTheme),
       ),
       backgroundColor: theme.colorScheme.surface,
@@ -100,7 +102,7 @@ class SettingsStyleView extends StatelessWidget {
                       child: Tooltip(
                         message: color == null
                             ? L10n.of(context).systemTheme
-                            : '#${color.value.toRadixString(16).toUpperCase()}',
+                            : '#${color.hexValue.toRadixString(16).toUpperCase()}',
                         child: InkWell(
                           borderRadius: BorderRadius.circular(colorPickerSize),
                           onTap: () => controller.setChatColor(color),
@@ -213,7 +215,7 @@ class SettingsStyleView extends StatelessWidget {
                                 ),
                                 child: DecoratedBox(
                                   decoration: BoxDecoration(
-                                    color: theme.colorScheme.primary,
+                                    color: theme.bubbleColor,
                                     borderRadius: BorderRadius.circular(
                                       AppConfig.borderRadius,
                                     ),
@@ -226,7 +228,7 @@ class SettingsStyleView extends StatelessWidget {
                                     child: Text(
                                       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor',
                                       style: TextStyle(
-                                        color: theme.colorScheme.onPrimary,
+                                        color: theme.onBubbleColor,
                                         fontSize: AppConfig.messageFontSize *
                                             AppConfig.fontSizeFactor,
                                       ),
@@ -356,6 +358,12 @@ class SettingsStyleView extends StatelessWidget {
               onChanged: (b) => AppConfig.separateChatTypes = b,
               storeKey: SettingKeys.separateChatTypes,
               defaultValue: AppConfig.separateChatTypes,
+            ),
+            SettingsSwitchListTile.adaptive(
+              title: L10n.of(context).displayNavigationRail,
+              onChanged: (b) => AppConfig.displayNavigationRail = b,
+              storeKey: SettingKeys.displayNavigationRail,
+              defaultValue: AppConfig.displayNavigationRail,
             ),
           ],
         ),

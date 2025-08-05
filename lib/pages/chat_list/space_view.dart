@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart' as sdk;
 import 'package:matrix/matrix.dart';
 
 import 'package:fluffychat/config/app_config.dart';
+import 'package:fluffychat/config/themes.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/chat_list/chat_list_item.dart';
 import 'package:fluffychat/pages/chat_list/search_title.dart';
-import 'package:fluffychat/utils/adaptive_bottom_sheet.dart';
 import 'package:fluffychat/utils/localized_exception_extension.dart';
 import 'package:fluffychat/utils/stream_extension.dart';
+import 'package:fluffychat/widgets/adaptive_dialogs/public_room_dialog.dart';
+import 'package:fluffychat/widgets/adaptive_dialogs/show_modal_action_popup.dart';
+import 'package:fluffychat/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
+import 'package:fluffychat/widgets/adaptive_dialogs/show_text_input_dialog.dart';
 import 'package:fluffychat/widgets/avatar.dart';
 import 'package:fluffychat/widgets/future_loading_dialog.dart';
 import 'package:fluffychat/widgets/matrix.dart';
-import 'package:fluffychat/widgets/public_room_bottom_sheet.dart';
 
 enum AddRoomType { chat, subspace }
 
@@ -97,10 +99,9 @@ class _SpaceViewState extends State<SpaceView> {
     final client = Matrix.of(context).client;
     final space = client.getRoomById(widget.spaceId);
 
-    final joined = await showAdaptiveBottomSheet<bool>(
+    final joined = await showAdaptiveDialog<bool>(
       context: context,
-      builder: (_) => PublicRoomBottomSheet(
-        outerContext: context,
+      builder: (_) => PublicRoomDialog(
         chunk: item,
         via: space?.spaceChildren
             .firstWhereOrNull(
@@ -130,13 +131,12 @@ class _SpaceViewState extends State<SpaceView> {
         break;
       case SpaceActions.leave:
         final confirmed = await showOkCancelAlertDialog(
-          useRootNavigator: false,
           context: context,
           title: L10n.of(context).areYouSure,
-          okLabel: L10n.of(context).ok,
-          cancelLabel: L10n.of(context).cancel,
           message: L10n.of(context).archiveRoomDescription,
-          isDestructiveAction: true,
+          okLabel: L10n.of(context).leave,
+          cancelLabel: L10n.of(context).cancel,
+          isDestructive: true,
         );
         if (!mounted) return;
         if (confirmed != OkCancelResult.ok) return;
@@ -152,16 +152,16 @@ class _SpaceViewState extends State<SpaceView> {
   }
 
   void _addChatOrSubspace() async {
-    final roomType = await showConfirmationDialog(
+    final roomType = await showModalActionPopup(
       context: context,
       title: L10n.of(context).addChatOrSubSpace,
       actions: [
-        AlertDialogAction(
-          key: AddRoomType.subspace,
+        AdaptiveModalAction(
+          value: AddRoomType.subspace,
           label: L10n.of(context).createNewSpace,
         ),
-        AlertDialogAction(
-          key: AddRoomType.chat,
+        AdaptiveModalAction(
+          value: AddRoomType.chat,
           label: L10n.of(context).createGroup,
         ),
       ],
@@ -173,28 +173,18 @@ class _SpaceViewState extends State<SpaceView> {
       title: roomType == AddRoomType.subspace
           ? L10n.of(context).createNewSpace
           : L10n.of(context).createGroup,
-      textFields: [
-        DialogTextField(
-          hintText: roomType == AddRoomType.subspace
-              ? L10n.of(context).spaceName
-              : L10n.of(context).groupName,
-          minLines: 1,
-          maxLines: 1,
-          maxLength: 64,
-          validator: (text) {
-            if (text == null || text.isEmpty) {
-              return L10n.of(context).pleaseChoose;
-            }
-            return null;
-          },
-        ),
-        DialogTextField(
-          hintText: L10n.of(context).chatDescription,
-          minLines: 4,
-          maxLines: 8,
-          maxLength: 255,
-        ),
-      ],
+      hintText: roomType == AddRoomType.subspace
+          ? L10n.of(context).spaceName
+          : L10n.of(context).groupName,
+      minLines: 1,
+      maxLines: 1,
+      maxLength: 64,
+      validator: (text) {
+        if (text.isEmpty) {
+          return L10n.of(context).pleaseChoose;
+        }
+        return null;
+      },
       okLabel: L10n.of(context).create,
       cancelLabel: L10n.of(context).cancel,
     );
@@ -209,29 +199,20 @@ class _SpaceViewState extends State<SpaceView> {
 
         if (roomType == AddRoomType.subspace) {
           roomId = await client.createSpace(
-            name: names.first,
-            topic: names.last.isEmpty ? null : names.last,
+            name: names,
             visibility: activeSpace.joinRules == JoinRules.public
                 ? sdk.Visibility.public
                 : sdk.Visibility.private,
           );
         } else {
           roomId = await client.createGroupChat(
-            groupName: names.first,
+            groupName: names,
             preset: activeSpace.joinRules == JoinRules.public
                 ? CreateRoomPreset.publicChat
                 : CreateRoomPreset.privateChat,
             visibility: activeSpace.joinRules == JoinRules.public
                 ? sdk.Visibility.public
                 : sdk.Visibility.private,
-            initialState: names.length > 1 && names.last.isNotEmpty
-                ? [
-                    StateEvent(
-                      type: EventTypes.RoomTopic,
-                      content: {'topic': names.last},
-                    ),
-                  ]
-                : null,
           );
         }
         await activeSpace.setSpaceChild(roomId);
@@ -249,17 +230,21 @@ class _SpaceViewState extends State<SpaceView> {
         room?.getLocalizedDisplayname() ?? L10n.of(context).nothingFound;
     return Scaffold(
       appBar: AppBar(
-        leading: Center(
-          child: CloseButton(
-            onPressed: widget.onBack,
-          ),
-        ),
-        titleSpacing: 0,
+        leading: FluffyThemes.isColumnMode(context)
+            ? null
+            : Center(
+                child: CloseButton(
+                  onPressed: widget.onBack,
+                ),
+              ),
+        automaticallyImplyLeading: false,
+        titleSpacing: FluffyThemes.isColumnMode(context) ? null : 0,
         title: ListTile(
           contentPadding: EdgeInsets.zero,
           leading: Avatar(
             mxContent: room?.avatar,
             name: displayname,
+            border: BorderSide(width: 1, color: theme.dividerColor),
             borderRadius: BorderRadius.circular(AppConfig.borderRadius / 2),
           ),
           title: Text(
@@ -280,6 +265,7 @@ class _SpaceViewState extends State<SpaceView> {
         ),
         actions: [
           PopupMenuButton<SpaceActions>(
+            useRootNavigator: true,
             onSelected: _onSpaceAction,
             itemBuilder: (context) => [
               PopupMenuItem(

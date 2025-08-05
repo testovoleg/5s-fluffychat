@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/l10n.dart';
-
 import 'package:fluffychat/config/themes.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/chat_search/chat_search_files_tab.dart';
 import 'package:fluffychat/pages/chat_search/chat_search_images_tab.dart';
 import 'package:fluffychat/pages/chat_search/chat_search_message_tab.dart';
@@ -59,7 +58,7 @@ class ChatSearchView extends StatelessWidget {
                 enabled: controller.tabController.index == 0,
                 decoration: InputDecoration(
                   hintText: L10n.of(context).search,
-                  suffixIcon: const Icon(Icons.search_outlined),
+                  prefixIcon: const Icon(Icons.search_outlined),
                   filled: true,
                   fillColor: theme.colorScheme.secondaryContainer,
                   border: OutlineInputBorder(

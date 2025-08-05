@@ -4,22 +4,21 @@ import 'package:flutter/material.dart';
 
 import 'package:badges/badges.dart';
 import 'package:desktop_drop/desktop_drop.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:matrix/matrix.dart';
 
+import 'package:fluffychat/config/app_config.dart';
 import 'package:fluffychat/config/themes.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/chat/chat.dart';
 import 'package:fluffychat/pages/chat/chat_app_bar_list_tile.dart';
 import 'package:fluffychat/pages/chat/chat_app_bar_title.dart';
 import 'package:fluffychat/pages/chat/chat_event_list.dart';
 import 'package:fluffychat/pages/chat/encryption_button.dart';
 import 'package:fluffychat/pages/chat/pinned_events.dart';
-import 'package:fluffychat/pages/chat/reactions_picker.dart';
 import 'package:fluffychat/pages/chat/reply_display.dart';
 import 'package:fluffychat/utils/account_config.dart';
 import 'package:fluffychat/utils/localized_exception_extension.dart';
 import 'package:fluffychat/widgets/chat_settings_popup_menu.dart';
-import 'package:fluffychat/widgets/connection_status_header.dart';
 import 'package:fluffychat/widgets/future_loading_dialog.dart';
 import 'package:fluffychat/widgets/matrix.dart';
 import 'package:fluffychat/widgets/mxc_image.dart';
@@ -49,15 +48,6 @@ class ChatView extends StatelessWidget {
           tooltip: L10n.of(context).copy,
           onPressed: controller.copyEventsAction,
         ),
-        if (controller.canSaveSelectedEvent)
-          // Use builder context to correctly position the share dialog on iPad
-          Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.adaptive.share),
-              tooltip: L10n.of(context).share,
-              onPressed: () => controller.saveSelectedEvent(context),
-            ),
-          ),
         if (controller.canPinSelectedEvents)
           IconButton(
             icon: const Icon(Icons.push_pin_outlined),
@@ -72,6 +62,7 @@ class ChatView extends StatelessWidget {
           ),
         if (controller.selectedEvents.length == 1)
           PopupMenuButton<_EventContextAction>(
+            useRootNavigator: true,
             onSelected: (action) {
               switch (action) {
                 case _EventContextAction.info:
@@ -84,6 +75,19 @@ class ChatView extends StatelessWidget {
               }
             },
             itemBuilder: (context) => [
+              if (controller.canSaveSelectedEvent)
+                PopupMenuItem(
+                  onTap: () => controller.saveSelectedEvent(context),
+                  value: null,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.download_outlined),
+                      const SizedBox(width: 12),
+                      Text(L10n.of(context).downloadFile),
+                    ],
+                  ),
+                ),
               PopupMenuItem(
                 value: _EventContextAction.info,
                 child: Row(
@@ -115,7 +119,8 @@ class ChatView extends StatelessWidget {
       ];
     } else if (!controller.room.isArchived) {
       return [
-        if (Matrix.of(context).voipPlugin != null &&
+        if (AppConfig.experimentalVoip &&
+            Matrix.of(context).voipPlugin != null &&
             controller.room.isDirectChat)
           IconButton(
             onPressed: controller.onPhoneButtonTap,
@@ -168,38 +173,39 @@ class ChatView extends StatelessWidget {
             if (scrollUpBannerEventId != null) {
               appbarBottomHeight += ChatAppBarListTile.fixedHeight;
             }
-            final tombstoneEvent =
-                controller.room.getState(EventTypes.RoomTombstone);
-            if (tombstoneEvent != null) {
-              appbarBottomHeight += ChatAppBarListTile.fixedHeight;
-            }
             return Scaffold(
               appBar: AppBar(
                 actionsIconTheme: IconThemeData(
                   color: controller.selectedEvents.isEmpty
                       ? null
-                      : theme.colorScheme.primary,
+                      : theme.colorScheme.onTertiaryContainer,
                 ),
+                backgroundColor: controller.selectedEvents.isEmpty
+                    ? null
+                    : theme.colorScheme.tertiaryContainer,
+                automaticallyImplyLeading: false,
                 leading: controller.selectMode
                     ? IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: controller.clearSelectedEvents,
                         tooltip: L10n.of(context).close,
-                        color: theme.colorScheme.primary,
+                        color: theme.colorScheme.onTertiaryContainer,
                       )
-                    : StreamBuilder<Object>(
-                        stream: Matrix.of(context)
-                            .client
-                            .onSync
-                            .stream
-                            .where((syncUpdate) => syncUpdate.hasRoomUpdate),
-                        builder: (context, _) => UnreadRoomsBadge(
-                          filter: (r) => r.id != controller.roomId,
-                          badgePosition: BadgePosition.topEnd(end: 8, top: 4),
-                          child: const Center(child: BackButton()),
-                        ),
-                      ),
-                titleSpacing: 0,
+                    : FluffyThemes.isColumnMode(context)
+                        ? null
+                        : StreamBuilder<Object>(
+                            stream:
+                                Matrix.of(context).client.onSync.stream.where(
+                                      (syncUpdate) => syncUpdate.hasRoomUpdate,
+                                    ),
+                            builder: (context, _) => UnreadRoomsBadge(
+                              filter: (r) => r.id != controller.roomId,
+                              badgePosition:
+                                  BadgePosition.topEnd(end: 8, top: 4),
+                              child: const Center(child: BackButton()),
+                            ),
+                          ),
+                titleSpacing: FluffyThemes.isColumnMode(context) ? 24 : 0,
                 title: ChatAppBarTitle(controller),
                 actions: _appBarActions(context),
                 bottom: PreferredSize(
@@ -208,18 +214,6 @@ class ChatView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       PinnedEvents(controller),
-                      if (tombstoneEvent != null)
-                        ChatAppBarListTile(
-                          title: tombstoneEvent.parsedTombstoneContent.body,
-                          leading: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(Icons.upgrade_outlined),
-                          ),
-                          trailing: TextButton(
-                            onPressed: controller.goToNewRoomAction,
-                            child: Text(L10n.of(context).goToTheNewRoom),
-                          ),
-                        ),
                       if (scrollUpBannerEventId != null)
                         ChatAppBarListTile(
                           leading: IconButton(
@@ -246,6 +240,8 @@ class ChatView extends StatelessWidget {
                   ),
                 ),
               ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.miniCenterFloat,
               floatingActionButton: controller.showScrollDownButton &&
                       controller.selectedEvents.isEmpty
                   ? Padding(
@@ -254,6 +250,8 @@ class ChatView extends StatelessWidget {
                         onPressed: controller.scrollDown,
                         heroTag: null,
                         mini: true,
+                        backgroundColor: theme.colorScheme.surface,
+                        foregroundColor: theme.colorScheme.onSurface,
                         child: const Icon(Icons.arrow_downward_outlined),
                       ),
                     )
@@ -276,8 +274,8 @@ class ChatView extends StatelessWidget {
                             cacheKey: accountConfig.wallpaperUrl.toString(),
                             uri: accountConfig.wallpaperUrl,
                             fit: BoxFit.cover,
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.sizeOf(context).height,
+                            width: MediaQuery.sizeOf(context).width,
                             isThumbnail: false,
                             placeholder: (_) => Container(),
                           ),
@@ -292,21 +290,34 @@ class ChatView extends StatelessWidget {
                               child: ChatEventList(controller: controller),
                             ),
                           ),
-                          if (controller.room.canSendDefaultMessages &&
+                          if (controller.showScrollDownButton)
+                            Divider(
+                              height: 1,
+                              color: theme.dividerColor,
+                            ),
+                          if (controller.room.isExtinct)
+                            Container(
+                              margin: EdgeInsets.all(bottomSheetPadding),
+                              width: double.infinity,
+                              child: ElevatedButton.icon(
+                                icon: const Icon(Icons.chevron_right),
+                                label: Text(L10n.of(context).enterNewChat),
+                                onPressed: controller.goToNewRoomAction,
+                              ),
+                            )
+                          else if (controller.room.canSendDefaultMessages &&
                               controller.room.membership == Membership.join)
                             Container(
-                              margin: EdgeInsets.only(
-                                bottom: bottomSheetPadding,
-                                left: bottomSheetPadding,
-                                right: bottomSheetPadding,
-                              ),
+                              margin: EdgeInsets.all(bottomSheetPadding),
                               constraints: const BoxConstraints(
-                                maxWidth: FluffyThemes.columnWidth * 2.5,
+                                maxWidth: FluffyThemes.maxTimelineWidth,
                               ),
                               alignment: Alignment.center,
                               child: Material(
                                 clipBehavior: Clip.hardEdge,
-                                color: theme.colorScheme.surfaceContainerHigh,
+                                color: controller.selectedEvents.isNotEmpty
+                                    ? theme.colorScheme.tertiaryContainer
+                                    : theme.colorScheme.surfaceContainerHigh,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(24),
                                 ),
@@ -350,8 +361,6 @@ class ChatView extends StatelessWidget {
                                     : Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          const ConnectionStatusHeader(),
-                                          ReactionsPicker(controller),
                                           ReplyDisplay(controller),
                                           ChatInputRow(controller),
                                           ChatEmojiPicker(controller),
@@ -364,7 +373,7 @@ class ChatView extends StatelessWidget {
                     ),
                     if (controller.dragging)
                       Container(
-                        color: theme.scaffoldBackgroundColor.withOpacity(0.9),
+                        color: theme.scaffoldBackgroundColor.withAlpha(230),
                         alignment: Alignment.center,
                         child: const Icon(
                           Icons.upload_outlined,

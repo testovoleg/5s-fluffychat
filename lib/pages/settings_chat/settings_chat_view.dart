@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:fluffychat/config/app_config.dart';
 import 'package:fluffychat/config/setting_keys.dart';
+import 'package:fluffychat/config/themes.dart';
+import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/utils/platform_infos.dart';
-import 'package:fluffychat/utils/voip/callkeep_manager.dart';
 import 'package:fluffychat/widgets/layouts/max_width_body.dart';
 import 'package:fluffychat/widgets/matrix.dart';
 import 'package:fluffychat/widgets/settings_switch_list_tile.dart';
@@ -21,7 +21,11 @@ class SettingsChatView extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(L10n.of(context).chat)),
+      appBar: AppBar(
+        title: Text(L10n.of(context).chat),
+        automaticallyImplyLeading: !FluffyThemes.isColumnMode(context),
+        centerTitle: FluffyThemes.isColumnMode(context),
+      ),
       body: ListTileTheme(
         iconColor: theme.textTheme.bodyLarge!.color,
         child: MaxWidthBody(
@@ -33,13 +37,6 @@ class SettingsChatView extends StatelessWidget {
                 onChanged: (b) => AppConfig.renderHtml = b,
                 storeKey: SettingKeys.renderHtml,
                 defaultValue: AppConfig.renderHtml,
-              ),
-              SettingsSwitchListTile.adaptive(
-                title: L10n.of(context).hideMemberChangesInPublicChats,
-                subtitle: L10n.of(context).hideMemberChangesInPublicChatsBody,
-                onChanged: (b) => AppConfig.hideUnimportantStateEvents = b,
-                storeKey: SettingKeys.hideUnimportantStateEvents,
-                defaultValue: AppConfig.hideUnimportantStateEvents,
               ),
               SettingsSwitchListTile.adaptive(
                 title: L10n.of(context).hideRedactedMessages,
@@ -112,16 +109,6 @@ class SettingsChatView extends StatelessWidget {
                 storeKey: SettingKeys.experimentalVoip,
                 defaultValue: AppConfig.experimentalVoip,
               ),
-              if (PlatformInfos.isMobile)
-                ListTile(
-                  title: Text(L10n.of(context).callingPermissions),
-                  onTap: () =>
-                      CallKeepManager().checkoutPhoneAccountSetting(context),
-                  trailing: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Icon(Icons.call),
-                  ),
-                ),
             ],
           ),
         ),
