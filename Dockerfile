@@ -3,7 +3,8 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-FROM ghcr.io/cirruslabs/flutter:3.44.8 AS builder
+# Cirrus images lag patch versions; .tool_versions.yaml may be newer (e.g. 3.44.8).
+FROM ghcr.io/cirruslabs/flutter:3.44.0 AS builder
 
 RUN sudo apt-get update \
   && sudo apt-get install -y --no-install-recommends curl wget jq build-essential \
