@@ -5,19 +5,19 @@ Source images used by the generation scripts live in `source/`:
 ```text
 source/
 ├── feature_graphic_template.png
-├── phone/
+├── phone/          # Samsung Galaxy S8+
 │   ├── login_light.png
 │   ├── login_dark.png
 │   └── chat_list.png
-└── tablet/
+└── tablet/         # iPad Mini
     ├── login_light.png
     ├── login_dark.png
     └── chat_list.png
 ```
 
-Generated store-ready files are written to `publish/` and
-`feature_graphic.png`. The scripts remove the Flutter DEBUG ribbon while
-rendering, so the source screenshots can be captured from a debug build.
+Capture phone screenshots on a **Samsung Galaxy S8+** emulator/device and
+tablet screenshots on an **iPad Mini**. Generated store-ready files are
+written to `publish/` and `feature_graphic.png`.
 
 Run the generators from any working directory:
 

@@ -20,11 +20,13 @@ class SpacesNavigationRail extends StatelessWidget {
   final String? activeSpaceId;
   final void Function() onGoToChats;
   final void Function(String) onGoToSpaceId;
+  final VoidCallback? onSpaceOrderChanged;
 
   const SpacesNavigationRail({
     required this.activeSpaceId,
     required this.onGoToChats,
     required this.onGoToSpaceId,
+    this.onSpaceOrderChanged,
     super.key,
   });
 
@@ -50,6 +52,7 @@ class SpacesNavigationRail extends StatelessWidget {
               activeSpaceId: activeSpaceId,
               onGoToChats: onGoToChats,
               onGoToSpaceId: onGoToSpaceId,
+              onSpaceOrderChanged: onSpaceOrderChanged,
             );
           },
         ),
@@ -63,12 +66,14 @@ class _SpacesRailBody extends StatefulWidget {
   final String? activeSpaceId;
   final void Function() onGoToChats;
   final void Function(String) onGoToSpaceId;
+  final VoidCallback? onSpaceOrderChanged;
 
   const _SpacesRailBody({
     required this.client,
     required this.activeSpaceId,
     required this.onGoToChats,
     required this.onGoToSpaceId,
+    this.onSpaceOrderChanged,
   });
 
   @override
@@ -112,6 +117,7 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
       _orderIds = ids;
     });
     await SpaceRailOrder.save(userId, _orderIds);
+    widget.onSpaceOrderChanged?.call();
   }
 
   List<Room> _orderedSpaces() {

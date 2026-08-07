@@ -10,6 +10,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:fluffychat/config/app_config.dart';
 import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/chat_list/chat_list_view.dart';
+import 'package:fluffychat/pages/chat_list/space_rail_order.dart';
 import 'package:fluffychat/utils/error_reporter.dart';
 import 'package:fluffychat/utils/localized_exception_extension.dart';
 import 'package:fluffychat/utils/matrix_sdk_extensions/matrix_locals.dart';
@@ -110,6 +111,11 @@ class ChatListController extends State<ChatList>
     }
   }
 
+  void onSpaceRailOrderChanged() {
+    if (!mounted) return;
+    setState(() {});
+  }
+
   @override
   void didUpdateWidget(covariant ChatList oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -183,9 +189,16 @@ class ChatListController extends State<ChatList>
     }
   }
 
-  List<Room> get filteredRooms => Matrix.of(
-    context,
-  ).client.rooms.where(getRoomFilterByActiveFilter(activeFilter)).toList();
+  List<Room> get filteredRooms {
+    final client = Matrix.of(context).client;
+    final rooms = client.rooms
+        .where(getRoomFilterByActiveFilter(activeFilter))
+        .toList();
+    if (activeFilter != ActiveFilter.spaces) return rooms;
+    final userId = client.userID;
+    if (userId == null) return rooms;
+    return SpaceRailOrder.apply(rooms, SpaceRailOrder.load(userId));
+  }
 
   bool isSearchMode = false;
   Future<QueryPublicRoomsResponse>? publicRoomsResponse;
@@ -344,8 +357,13 @@ class ChatListController extends State<ChatList>
   }
 
   // Needs to match GroupsSpacesEntry for 'separate group' checking.
-  List<Room> get spaces =>
-      Matrix.of(context).client.rooms.where((r) => r.isSpace).toList();
+  List<Room> get spaces {
+    final client = Matrix.of(context).client;
+    final spaces = client.rooms.where((r) => r.isSpace).toList();
+    final userId = client.userID;
+    if (userId == null) return spaces;
+    return SpaceRailOrder.apply(spaces, SpaceRailOrder.load(userId));
+  }
 
   String? get activeChat => widget.activeChat;
 

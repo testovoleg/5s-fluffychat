@@ -6,19 +6,13 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "assets/google_play/source"
 TEMPLATE = SOURCE / "feature_graphic_template.png"
+# Phone source is captured on Samsung Galaxy S8+.
 SCREENSHOT = SOURCE / "phone/login_light.png"
 DESTINATION = ROOT / "assets/google_play/feature_graphic.png"
 
 
 canvas = Image.open(TEMPLATE).convert("RGBA")
 screenshot = Image.open(SCREENSHOT).convert("RGB")
-
-# The login screen has no controls under the Flutter DEBUG ribbon.
-background = screenshot.getpixel((screenshot.width - 120, 8))
-ImageDraw.Draw(screenshot).rectangle(
-    (screenshot.width - 105, 0, screenshot.width - 1, 105),
-    fill=background,
-)
 
 screen_box = (624, 69, 800, 424)
 screen_size = (

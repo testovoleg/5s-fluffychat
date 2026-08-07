@@ -44,37 +44,53 @@ class IntroPage extends StatelessWidget {
         actions: [
           PopupMenuButton(
             useRootNavigator: true,
+            constraints: const BoxConstraints(minWidth: 280, maxWidth: 320),
             itemBuilder: (_) => [
               PopupMenuItem(
                 onTap: isLoading ? null : () => restoreBackupFlow(context),
                 child: Row(
-                  mainAxisSize: .min,
                   children: [
                     const Icon(Icons.import_export_outlined),
                     const SizedBox(width: 12),
-                    Text(L10n.of(context).hydrate),
+                    Expanded(
+                      child: Text(
+                        L10n.of(context).hydrate,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
               PopupMenuItem(
                 onTap: () => launchUrlString(AppSettings.privacyPolicy.value),
                 child: Row(
-                  mainAxisSize: .min,
                   children: [
                     const Icon(Icons.privacy_tip_outlined),
                     const SizedBox(width: 12),
-                    Text(L10n.of(context).privacy),
+                    Expanded(
+                      child: Text(
+                        L10n.of(context).privacy,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
               PopupMenuItem(
                 onTap: () => PlatformInfos.showDialog(context),
                 child: Row(
-                  mainAxisSize: .min,
                   children: [
                     const Icon(Icons.info_outlined),
                     const SizedBox(width: 12),
-                    Text(L10n.of(context).about),
+                    Expanded(
+                      child: Text(
+                        L10n.of(context).about,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),

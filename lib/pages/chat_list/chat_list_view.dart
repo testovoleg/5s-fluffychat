@@ -51,6 +51,8 @@ class ChatListView extends StatelessWidget {
                             activeSpaceId: controller.activeSpaceId,
                             onGoToChats: controller.clearActiveSpace,
                             onGoToSpaceId: controller.setActiveSpace,
+                            onSpaceOrderChanged:
+                                controller.onSpaceRailOrderChanged,
                           )
                         : SizedBox(
                             width: 0,
