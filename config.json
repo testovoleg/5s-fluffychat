@@ -1,0 +1,12 @@
+{
+  "applicationName": "5S Chat",
+  "defaultHomeserver": "m.5systems.ru",
+  "presetHomeserver": "m.5systems.ru",
+  "welcomeText": "Добро пожаловать в 5S Chat",
+  "appLocale": "ru",
+  "colorSchemeSeedInt": 4283835834,
+  "pushNotificationsGatewayUrl": "https://push.m.5systems.ru/_matrix/push/v1/notify",
+  "privacyPolicy": "https://github.com/krille-chan/fluffychat/blob/main/PRIVACY.md",
+  "displayNavigationRail": true,
+  "enableSoftLogout": false
+}
