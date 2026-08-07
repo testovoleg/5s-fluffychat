@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"D:\\\\RepoNew\\\\5s-fluffychat\" 2>&1 | head -50)",
+      "Read(//d/RepoNew/5s-fluffychat/**)",
+      "Bash(\"D:/Android/Sdk/platform-tools/adb.exe\" devices *)",
+      "Bash(flutter devices *)",
+      "Bash(find \"/c/Users/buloichyk/AppData/Local/Pub/Cache/hosted/pub.dev\" -maxdepth 1 -iname \"vodozemac*\" -o -iname \"flutter_vodozemac*\" 2>/dev/null *)",
+      "Read(//c/Users/buloichyk/AppData/Local/Pub/Cache/hosted/pub.dev/**)"
+    ]
+  }
+}

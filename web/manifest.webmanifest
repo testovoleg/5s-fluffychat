@@ -1,0 +1,56 @@
+{
+    "name": "5S Chat",
+    "short_name": "5S Chat",
+    "description": "Chat with your friends on Matrix.",
+    "lang": "ru",
+    "dir": "ltr",
+    "start_url": "./",
+    "scope": "./",
+    "id": "./",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#FFFFFF",
+    "theme_color": "#261386",
+    "categories": ["social", "communication"],
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "screenshots/narrow.png",
+            "sizes": "1080x1920",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Chat list"
+        },
+        {
+            "src": "screenshots/wide.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "5S Chat on desktop"
+        }
+    ]
+}

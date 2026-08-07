@@ -1,0 +1,8 @@
+{
+    "[dart]": {
+        "editor.codeActionsOnSave": [
+            "source.organizeImports"
+        ]
+    },
+    "cmake.sourceDirectory": "D:/RepoNew/for-fluffy/fluffychat/windows"
+}
