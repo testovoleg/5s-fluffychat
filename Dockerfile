@@ -22,7 +22,7 @@ WORKDIR /app
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
-RUN ./scripts/prepare-web.sh
+RUN chmod +x ./scripts/*.sh && ./scripts/prepare-web.sh
 RUN flutter pub get
 
 # Optional: --build-arg BASE_HREF=/chat/ for subpath Ingress deployments
