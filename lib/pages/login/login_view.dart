@@ -69,8 +69,8 @@ class LoginView extends StatelessWidget {
                       prefixIcon: const Icon(Icons.account_box_outlined),
                       errorText: controller.usernameError,
                       errorStyle: const TextStyle(color: Colors.orange),
-                      hintText: '@username:domain',
-                      labelText: L10n.of(context).matrixId,
+                      hintText: 'Логин',
+                      labelText: 'Логин',
                     ),
                   ),
                 ),
@@ -119,20 +119,6 @@ class LoginView extends StatelessWidget {
                         : Text(L10n.of(context).login),
                   ),
                 ),
-                const SizedBox(height: 16),
-                if (homeserver != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: TextButton(
-                      onPressed: controller.loading
-                          ? () {}
-                          : controller.passwordForgotten,
-                      style: TextButton.styleFrom(
-                        foregroundColor: theme.colorScheme.error,
-                      ),
-                      child: Text(L10n.of(context).passwordForgotten),
-                    ),
-                  ),
                 const SizedBox(height: 16),
               ],
             ),

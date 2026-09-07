@@ -172,10 +172,41 @@ class ChatListController extends State<ChatList>
     }
   }
 
+  static const _archiveSpaceNames = {'архив', 'archive'};
+
+  bool _isArchiveSpace(Room space) {
+    if (!space.isSpace) return false;
+    final name = space.getLocalizedDisplayname().trim().toLowerCase();
+    return _archiveSpaceNames.contains(name);
+  }
+
+  Set<String> _archiveSpaceChildIds(Client client) {
+    final ids = <String>{};
+    for (final space in client.rooms) {
+      if (!_isArchiveSpace(space)) continue;
+      for (final child in space.spaceChildren) {
+        final roomId = child.roomId;
+        if (roomId != null) ids.add(roomId);
+      }
+    }
+    for (final room in client.rooms) {
+      if (room.isSpace || ids.contains(room.id)) continue;
+      for (final parent in room.spaceParents) {
+        final space = client.getRoomById(parent.roomId ?? '');
+        if (space != null && _isArchiveSpace(space)) {
+          ids.add(room.id);
+          break;
+        }
+      }
+    }
+    return ids;
+  }
+
   bool Function(Room) getRoomFilterByActiveFilter(ActiveFilter activeFilter) {
+    final archiveRoomIds = _archiveSpaceChildIds(Matrix.of(context).client);
     switch (activeFilter) {
       case ActiveFilter.allChats:
-        return (room) => !room.isSpace;
+        return (room) => !room.isSpace && !archiveRoomIds.contains(room.id);
       case ActiveFilter.messages:
         return (room) => !room.isSpace && room.isDirectChat;
       case ActiveFilter.groups:

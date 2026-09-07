@@ -10,12 +10,11 @@ import 'package:fluffychat/utils/localized_exception_extension.dart';
 import 'package:fluffychat/widgets/adaptive_dialogs/show_ok_cancel_alert_dialog.dart';
 import 'package:fluffychat/widgets/adaptive_dialogs/show_text_input_dialog.dart';
 import 'package:fluffychat/widgets/future_loading_dialog.dart';
-import 'package:fluffychat/widgets/matrix.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matrix/matrix.dart';
 
-import '../../utils/platform_infos.dart';
+import '../../utils/sign_in_flows/oidc_password_login.dart';
 import 'login_view.dart';
 
 class Login extends StatefulWidget {
@@ -38,7 +37,6 @@ class LoginController extends State<Login> {
       setState(() => showPassword = !loading && !showPassword);
 
   Future<void> login() async {
-    final matrix = Matrix.of(context);
     if (usernameController.text.isEmpty) {
       setState(() => usernameError = L10n.of(context).pleaseEnterYourUsername);
     } else {
@@ -59,38 +57,20 @@ class LoginController extends State<Login> {
     _coolDown?.cancel();
 
     try {
-      final username = usernameController.text;
-      AuthenticationIdentifier identifier;
-      if (username.isEmail) {
-        identifier = AuthenticationThirdPartyIdentifier(
-          medium: 'email',
-          address: username,
-        );
-      } else if (username.isPhoneNumber) {
-        identifier = AuthenticationThirdPartyIdentifier(
-          medium: 'msisdn',
-          address: username,
-        );
-      } else {
-        identifier = AuthenticationUserIdentifier(user: username);
-      }
-      final client = await matrix.getLoginClient();
-      await client.login(
-        LoginType.mLoginPassword,
-        identifier: identifier,
-        // To stay compatible with older server versions
-        // ignore: deprecated_member_use
-        user: identifier.type == AuthenticationIdentifierTypes.userId
-            ? username
-            : null,
+      final username = usernameController.text.trim();
+      await oidcPasswordLoginFlow(
+        client: widget.client,
+        username: username,
         password: passwordController.text,
-        initialDeviceDisplayName: PlatformInfos.appDisplayName,
       );
       if (mounted) {
         context.go('/rooms');
       }
     } on MatrixException catch (exception) {
       setState(() => passwordError = exception.errorMessage);
+      return setState(() => loading = false);
+    } on OidcPasswordLoginException catch (exception) {
+      setState(() => passwordError = exception.message);
       return setState(() => loading = false);
     } catch (exception) {
       setState(() => passwordError = exception.toString());

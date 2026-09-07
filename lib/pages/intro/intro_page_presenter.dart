@@ -113,6 +113,38 @@ class _IntroPagePresenterState extends State<IntroPagePresenter> {
     );
   }
 
+  Future<void> _passwordLogin() async {
+    setState(() => isLoading = true);
+    try {
+      final client = await Matrix.of(context).getLoginClient();
+      final homeserverName = AppSettings.presetHomeserver.value.isNotEmpty
+          ? AppSettings.presetHomeserver.value
+          : AppSettings.defaultHomeserver.value;
+      if (homeserverName.isNotEmpty) {
+        var homeserver = Uri.parse(homeserverName);
+        if (homeserver.scheme.isEmpty) {
+          homeserver = Uri.https(homeserverName, '');
+        }
+        await client.checkHomeserver(homeserver);
+      }
+      if (!mounted) return;
+      context.go(
+        '${GoRouterState.of(context).uri.path}/login',
+        extra: client,
+      );
+    } catch (e, s) {
+      Logs().w('Unable to open password login', e, s);
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toLocalizedString(context))));
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return IntroPage(
@@ -123,6 +155,7 @@ class _IntroPagePresenterState extends State<IntroPagePresenter> {
           ? null
           : AppSettings.welcomeText.value,
       login: _login,
+      passwordLogin: _passwordLogin,
     );
   }
 }

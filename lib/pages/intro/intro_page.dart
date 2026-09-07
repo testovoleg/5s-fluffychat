@@ -17,6 +17,7 @@ class IntroPage extends StatelessWidget {
   final bool isLoading, hasPresetHomeserver;
   final String? loggingInToHomeserver, welcomeText;
   final VoidCallback login;
+  final VoidCallback passwordLogin;
 
   const IntroPage({
     required this.isLoading,
@@ -25,6 +26,7 @@ class IntroPage extends StatelessWidget {
     required this.hasPresetHomeserver,
     required this.welcomeText,
     required this.login,
+    required this.passwordLogin,
   });
 
   @override
@@ -180,26 +182,14 @@ class IntroPage extends StatelessWidget {
                                     ),
                                   ),
                                 ElevatedButton(
-                                  onPressed: login,
+                                  onPressed: isLoading ? null : login,
                                   child: Text(L10n.of(context).signIn),
                                 ),
-
-                                if (!hasPresetHomeserver)
-                                  TextButton(
-                                    onPressed: () async {
-                                      final client = await Matrix.of(
-                                        context,
-                                      ).getLoginClient();
-                                      if (!context.mounted) return;
-                                      context.go(
-                                        '${GoRouterState.of(context).uri.path}/login',
-                                        extra: client,
-                                      );
-                                    },
-                                    child: Text(
-                                      L10n.of(context).loginWithMatrixId,
-                                    ),
-                                  ),
+                                const SizedBox(height: 8),
+                                TextButton(
+                                  onPressed: isLoading ? null : passwordLogin,
+                                  child: const Text('Войти по паролю'),
+                                ),
                               ],
                             ),
                           ),

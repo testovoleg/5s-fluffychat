@@ -90,6 +90,7 @@ abstract class AppConfig {
   static const String appSsoUrlScheme = 'im.fluffychat.auth';
   static const String ssoLogoutUrl =
       'https://login.5systems.ru/realms/5systems/protocol/openid-connect/logout';
+  static const String supergraphUrl = 'https://api.5systems.ru/supergraph';
 
   static const String sourceCodeUrl =
       'https://github.com/krille-chan/fluffychat';
