@@ -30,7 +30,7 @@
             }
         }
     },
-    "account": "Учётная запись",
+    "account": "Аккаунт",
     "@account": {
         "type": "String",
         "placeholders": {}
@@ -103,7 +103,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "askSSSSSign": "Для подписи ключа другого пользователя, пожалуйста, введите вашу парольную фразу или ключ восстановления.",
+    "askSSSSSign": "Чтобы подписать ключ другого пользователя, введите кодовую фразу или ключ восстановления.",
     "@askSSSSSign": {
         "type": "String",
         "placeholders": {}
@@ -171,7 +171,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "cantOpenUri": "Не удается открыть URI {uri}",
+    "cantOpenUri": "Не удаётся открыть URI {uri}",
     "@cantOpenUri": {
         "type": "String",
         "placeholders": {
@@ -396,17 +396,17 @@
         "type": "String",
         "description": "Usage hint for the command /leave"
     },
-    "commandHint_me": "Опишите себя",
+    "commandHint_me": "Описать своё действие",
     "@commandHint_me": {
         "type": "String",
         "description": "Usage hint for the command /me"
     },
-    "commandHint_myroomavatar": "Установите свою фотографию для этой комнаты (автор: mxc-uri)",
+    "commandHint_myroomavatar": "Задать свою картинку для этой комнаты (по mxc-URI)",
     "@commandHint_myroomavatar": {
         "type": "String",
         "description": "Usage hint for the command /myroomavatar"
     },
-    "commandHint_myroomnick": "Задайте отображаемое имя для этой комнаты",
+    "commandHint_myroomnick": "Задать отображаемое имя для этой комнаты",
     "@commandHint_myroomnick": {
         "type": "String",
         "description": "Usage hint for the command /myroomnick"
@@ -465,12 +465,12 @@
         "type": "String",
         "placeholders": {}
     },
-    "contactHasBeenInvitedToTheGroup": "Контакт был приглашен в группу",
+    "contactHasBeenInvitedToTheGroup": "Контакт приглашён в группу",
     "@contactHasBeenInvitedToTheGroup": {
         "type": "String",
         "placeholders": {}
     },
-    "contentHasBeenReported": "О контенте было сообщено администраторам сервера",
+    "contentHasBeenReported": "Жалоба отправлена администраторам сервера",
     "@contentHasBeenReported": {
         "type": "String",
         "placeholders": {}
@@ -499,7 +499,7 @@
             }
         }
     },
-    "countParticipants": "{count} участника(ов)",
+    "countParticipants": "{count, plural, one{{count} участник} few{{count} участника} many{{count} участников} other{{count} участника}}",
     "@countParticipants": {
         "type": "String",
         "placeholders": {
@@ -527,7 +527,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "currentlyActive": "В настоящее время активен(а)",
+    "currentlyActive": "Сейчас в сети",
     "@currentlyActive": {
         "type": "String",
         "placeholders": {}
@@ -549,7 +549,7 @@
             }
         }
     },
-    "deactivateAccountWarning": "Это деактивирует вашу учётную запись пользователя. Данное действие не может быть отменено! Вы уверены?",
+    "deactivateAccountWarning": "Ваш аккаунт будет деактивирован. Это действие нельзя отменить! Вы уверены?",
     "@deactivateAccountWarning": {
         "type": "String",
         "placeholders": {}
@@ -763,27 +763,12 @@
         "type": "String",
         "placeholders": {}
     },
-    "hideUnknownEvents": "Скрыть неизвестные события",
-    "@hideUnknownEvents": {
-        "type": "String",
-        "placeholders": {}
-    },
-    "ignore": "Игнорировать",
-    "@ignore": {
-        "type": "String",
-        "placeholders": {}
-    },
-    "ignoredUsers": "Игнорируемые пользователи",
-    "@ignoredUsers": {
-        "type": "String",
-        "placeholders": {}
-    },
-    "iHaveClickedOnLink": "Я перешёл по ссылке",
+    "iHaveClickedOnLink": "Я перешёл(а) по ссылке",
     "@iHaveClickedOnLink": {
         "type": "String",
         "placeholders": {}
     },
-    "incorrectPassphraseOrKey": "Неверный пароль или ключ восстановления",
+    "incorrectPassphraseOrKey": "Неверная кодовая фраза или ключ восстановления",
     "@incorrectPassphraseOrKey": {
         "type": "String",
         "placeholders": {}
@@ -802,7 +787,7 @@
             }
         }
     },
-    "invited": "Приглашён",
+    "invited": "Приглашён(а)",
     "@invited": {
         "type": "String",
         "placeholders": {}
@@ -824,7 +809,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "inviteText": "{username} пригласил(а) вас в 5S Chat. \n1. Посетите https://fluffychat.im и установите приложение \n2. Зарегистрируйтесь или войдите \n3. Откройте ссылку приглашения: \n {link}",
+    "inviteText": "{username} пригласил(а) вас в 5S Chat.\n1. Перейдите на https://5systems.ru и установите приложение\n2. Зарегистрируйтесь или войдите\n3. Откройте ссылку-приглашение:\n{link}",
     "@inviteText": {
         "type": "String",
         "placeholders": {
@@ -898,7 +883,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "leftTheChat": "Покинуть чат",
+    "leftTheChat": "Покинул(а) чат",
     "@leftTheChat": {
         "type": "String",
         "placeholders": {}
@@ -923,7 +908,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "locationDisabledNotice": "Службы определения местоположения отключены. Включите их, чтобы иметь возможность обмениваться информацией о своем местоположении.",
+    "locationDisabledNotice": "Службы определения местоположения отключены. Включите их, чтобы делиться своим местоположением.",
     "@locationDisabledNotice": {
         "type": "String",
         "placeholders": {}
@@ -1007,12 +992,12 @@
         "type": "String",
         "placeholders": {}
     },
-    "noEncryptionForPublicRooms": "Вы можете активировать шифрование только тогда, когда комната перестает быть общедоступной.",
+    "noEncryptionForPublicRooms": "Вы можете активировать шифрование только тогда, когда комната перестаёт быть общедоступной.",
     "@noEncryptionForPublicRooms": {
         "type": "String",
         "placeholders": {}
     },
-    "noGoogleServicesWarning": "Похоже, у вас нет служб Google на вашем телефоне. Это хорошее решение для вашей конфиденциальности! Для получения push-уведомлений в 5S Chat мы рекомендуем использовать ntfy. С ntfy или другим провайдером единых уведомлений вы можете получать push-уведомления безопасным способом передачи данных. Скачать ntfy можно из F-Droid или из Play Маркета.",
+    "noGoogleServicesWarning": "Похоже, на вашем устройстве недоступен Firebase Cloud Messaging. Чтобы всё равно получать push-уведомления, рекомендуем установить ntfy. С ntfy или другим провайдером Unified Push вы получаете push-уведомления, сохраняя данные в безопасности. Скачать ntfy можно в Play Маркете или F-Droid.",
     "@noGoogleServicesWarning": {
         "type": "String",
         "placeholders": {}
@@ -1049,7 +1034,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "numUsersTyping": "{count} пользователей печатают…",
+    "numUsersTyping": "{count, plural, one{{count} пользователь печатает…} few{{count} пользователя печатают…} many{{count} пользователей печатают…} other{{count} пользователя печатают…}}",
     "@numUsersTyping": {
         "type": "String",
         "placeholders": {
@@ -1108,7 +1093,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "passphraseOrKey": "пароль или ключ восстановления",
+    "passphraseOrKey": "кодовая фраза или ключ восстановления",
     "@passphraseOrKey": {
         "type": "String",
         "placeholders": {}
@@ -1143,7 +1128,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "pleaseClickOnLink": "Пожалуйста, нажмите на ссылку в электронной почте, для того чтобы продолжить.",
+    "pleaseClickOnLink": "Перейдите по ссылке из письма, а затем продолжите.",
     "@pleaseClickOnLink": {
         "type": "String",
         "placeholders": {}
@@ -1183,7 +1168,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "redactedAnEvent": "{username} отредактировал(а) событие",
+    "redactedAnEvent": "{username} удалил(а) событие",
     "@redactedAnEvent": {
         "type": "String",
         "placeholders": {
@@ -1192,12 +1177,12 @@
             }
         }
     },
-    "redactMessage": "Отредактировать сообщение",
+    "redactMessage": "Удалить сообщение",
     "@redactMessage": {
         "type": "String",
         "placeholders": {}
     },
-    "reject": "Отказать",
+    "reject": "Отклонить",
     "@reject": {
         "type": "String",
         "placeholders": {}
@@ -1241,7 +1226,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "reportMessage": "Сообщить о сообщении",
+    "reportMessage": "Пожаловаться на сообщение",
     "@reportMessage": {
         "type": "String",
         "placeholders": {}
@@ -1271,7 +1256,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "send": "Прислать",
+    "send": "Отправить",
     "@send": {
         "type": "String",
         "placeholders": {}
@@ -1518,7 +1503,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "userAndOthersAreTyping": "{username} и еще {count} печатают…",
+    "userAndOthersAreTyping": "{username} и ещё {count, plural, one{{count} пользователь} few{{count} пользователя} many{{count} пользователей} other{{count} пользователя}} печатают…",
     "@userAndOthersAreTyping": {
         "type": "String",
         "placeholders": {
@@ -1572,22 +1557,22 @@
             }
         }
     },
-    "verified": "Проверено",
+    "verified": "Подтверждено",
     "@verified": {
         "type": "String",
         "placeholders": {}
     },
-    "verifyStart": "Начать проверку",
+    "verifyStart": "Начать подтверждение",
     "@verifyStart": {
         "type": "String",
         "placeholders": {}
     },
-    "verifySuccess": "Вы успешно проверены!",
+    "verifySuccess": "Подтверждение успешно завершено!",
     "@verifySuccess": {
         "type": "String",
         "placeholders": {}
     },
-    "verifyTitle": "Проверка другой учётной записи",
+    "verifyTitle": "Подтверждение другого аккаунта",
     "@verifyTitle": {
         "type": "String",
         "placeholders": {}
@@ -1617,17 +1602,17 @@
         "type": "String",
         "placeholders": {}
     },
-    "waitingPartnerAcceptRequest": "Жду, когда партнер примет запроc…",
+    "waitingPartnerAcceptRequest": "Ожидание, пока собеседник примет запрос…",
     "@waitingPartnerAcceptRequest": {
         "type": "String",
         "placeholders": {}
     },
-    "waitingPartnerEmoji": "Жду, когда партнер примет эмодзи…",
+    "waitingPartnerEmoji": "Ожидание, пока собеседник подтвердит эмодзи…",
     "@waitingPartnerEmoji": {
         "type": "String",
         "placeholders": {}
     },
-    "waitingPartnerNumbers": "В ожидании партнёра, чтобы принять числа…",
+    "waitingPartnerNumbers": "Ожидание, пока собеседник подтвердит числа…",
     "@waitingPartnerNumbers": {
         "type": "String",
         "placeholders": {}
@@ -1652,7 +1637,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "whyDoYouWantToReportThis": "Почему вы хотите сообщить об этом?",
+    "whyDoYouWantToReportThis": "Почему вы хотите пожаловаться?",
     "@whyDoYouWantToReportThis": {
         "type": "String",
         "placeholders": {}
@@ -1698,11 +1683,11 @@
     "bundleName": "Название пакета",
     "removeFromBundle": "Удалить из этого пакета",
     "addToBundle": "Добавить в пакет",
-    "editBundlesForAccount": "Изменить пакеты для этой учетной записи",
-    "addAccount": "Добавить учетную запись",
+    "editBundlesForAccount": "Изменить пакеты для этого аккаунта",
+    "addAccount": "Добавить аккаунт",
     "link": "Ссылка",
-    "oneClientLoggedOut": "Один из ваших клиентов вышел",
-    "unverified": "Не проверено",
+    "oneClientLoggedOut": "На одном из ваших устройств выполнен выход",
+    "unverified": "Не подтверждено",
     "commandHint_clearcache": "Очистить кэш",
     "@commandHint_clearcache": {
         "type": "String",
@@ -1713,7 +1698,7 @@
         "type": "String",
         "description": "Usage hint for the command /discardsession"
     },
-    "commandHint_dm": "Начните личный чат\nИспользуйте --no-encryption, чтобы отключить шифрование",
+    "commandHint_dm": "Начать личный чат\nИспользуйте --no-encryption, чтобы отключить шифрование",
     "@commandHint_dm": {
         "type": "String",
         "description": "Usage hint for the command /dm"
@@ -1721,7 +1706,7 @@
     "messageInfo": "Информация о сообщении",
     "openGallery": "Открыть галерею",
     "removeFromSpace": "Удалить из пространства",
-    "commandHint_create": "Создайте пустой групповой чат\nИспользуйте --no-encryption, чтобы отключить шифрование",
+    "commandHint_create": "Создать пустой групповой чат\nИспользуйте --no-encryption, чтобы отключить шифрование",
     "@commandHint_create": {
         "type": "String",
         "description": "Usage hint for the command /create"
@@ -1730,8 +1715,8 @@
     "time": "Время",
     "repeatPassword": "Повторите пароль",
     "markAsRead": "Отметить как прочитанное",
-    "reportUser": "Сообщить о пользователе",
-    "reactedWith": "{sender} реагирует с {reaction}",
+    "reportUser": "Пожаловаться на пользователя",
+    "reactedWith": "{sender} отреагировал(а): {reaction}",
     "@reactedWith": {
         "type": "String",
         "placeholders": {
@@ -1816,7 +1801,7 @@
     "storeInAndroidKeystore": "Сохранить в Android KeyStore",
     "storeInAppleKeyChain": "Сохранить в Apple KeyChain",
     "user": "Пользователь",
-    "confirmMatrixId": "Пожалуйста, подтвердите Matrix ID, чтобы удалить свою учётную запись.",
+    "confirmMatrixId": "Пожалуйста, подтвердите Matrix ID, чтобы удалить свой аккаунт.",
     "supposedMxid": "Это должно быть {mxid}",
     "@supposedMxid": {
         "type": "String",
@@ -1830,14 +1815,14 @@
     "hydrate": "Восстановить из файла резервной копии",
     "dehydrate": "Экспорт сеанса и очистка устройства",
     "dehydrateWarning": "Это действие не может быть отменено. Убедитесь, что вы безопасно сохранили файл резервной копии.",
-    "screenSharingDetail": "Вы делитесь своим экраном в FuffyChat",
+    "screenSharingDetail": "Вы показываете свой экран в 5S Chat",
     "newSpace": "Новое пространство",
-    "commandHint_markasdm": "Пометить как комнату личных сообщений",
-    "foregroundServiceRunning": "Это уведомление появляется, когда запущена основная служба.",
+    "commandHint_markasdm": "Пометить как комнату личных сообщений с указанным Matrix ID",
+    "foregroundServiceRunning": "Это уведомление отображается, пока работает служба приложения.",
     "commandHint_markasgroup": "Пометить как группу",
     "whyIsThisMessageEncrypted": "Почему это сообщение нечитаемо?",
-    "noKeyForThisMessage": "Это может произойти, если сообщение было отправлено до того, как вы вошли в свою учетную запись на данном устройстве.\n\nТакже возможно, что отправитель заблокировал ваше устройство или что-то пошло не так с интернет-соединением.\n\nВы можете прочитать сообщение на другой сессии? Тогда вы можете перенести сообщение с неё! Перейдите в Настройки > Устройства и убедитесь, что ваши устройства проверили друг друга. Когда вы откроете комнату в следующий раз и обе сессии будут открыты, ключи будут переданы автоматически.\n\nВы не хотите потерять ключи при выходе из системы или переключении устройств? Убедитесь, что вы включили резервное копирование чата в настройках.",
-    "screenSharingTitle": "общий доступ к экрану",
+    "noKeyForThisMessage": "Это может произойти, если сообщение было отправлено до того, как вы вошли в свой аккаунт на этом устройстве.\n\nТакже возможно, что отправитель заблокировал ваше устройство или возникли проблемы с интернет-соединением.\n\nМожете прочитать сообщение в другом сеансе? Тогда перенесите его оттуда! Откройте «Настройки > Устройства» и убедитесь, что ваши устройства подтвердили друг друга. Когда вы в следующий раз откроете комнату и оба сеанса будут активны, ключи передадутся автоматически.\n\nНе хотите терять ключи при выходе или смене устройства? Включите резервное копирование чатов в настройках.",
+    "screenSharingTitle": "Демонстрация экрана",
     "fileIsTooBigForServer": "Отправка не удалась! Сервер поддерживает только вложения размером до {max}.",
     "sorryThatsNotPossible": "Извините... это невозможно",
     "openLinkInBrowser": "Открыть ссылку в браузере",
@@ -1862,7 +1847,7 @@
             }
         }
     },
-    "hugContent": "{senderName} обнимает Вас",
+    "hugContent": "{senderName} обнимает вас",
     "@hugContent": {
         "type": "String",
         "placeholders": {
@@ -1873,13 +1858,13 @@
     },
     "jump": "Перейти",
     "doNotShowAgain": "Не показывать снова",
-    "newSpaceDescription": "Пространства позволяют объединять Ваши чаты и создавать частные или общедоступные сообщества.",
-    "disableEncryptionWarning": "В целях безопасности Вы не можете отключить шифрование в чате, где оно было включено.",
-    "noBackupWarning": "Внимание! Без резервного копиирования, Вы потеряете доступ к своим зашифрованным сообщениям. Крайне рекомендуется включить резервное копирование перед выходом.",
+    "newSpaceDescription": "Пространства позволяют объединять ваши чаты и создавать частные или общедоступные сообщества.",
+    "disableEncryptionWarning": "В целях безопасности вы не можете отключить шифрование в чате, где оно уже было включено.",
+    "noBackupWarning": "Внимание! Без резервного копирования чатов вы потеряете доступ к зашифрованным сообщениям. Перед выходом настоятельно рекомендуем включить резервное копирование.",
     "noOtherDevicesFound": "Другие устройства не найдены",
     "reportErrorDescription": "😭 О, нет. Что-то пошло не так. При желании вы можете сообщить об этой ошибке разработчикам.",
-    "report": "пожаловаться",
-    "jumpToLastReadMessage": "Последнее прочитанное сообщение",
+    "report": "Пожаловаться",
+    "jumpToLastReadMessage": "К последнему прочитанному сообщению",
     "wasDirectChatDisplayName": "Пустой чат (был {oldDisplayName})",
     "@wasDirectChatDisplayName": {
         "type": "String",
@@ -1898,7 +1883,7 @@
     "importFromZipFile": "Импортировать из .zip файла",
     "exportEmotePack": "Экспортировать набор эмодзи как .zip",
     "replace": "Заменить",
-    "googlyEyesContent": "{senderName} выпучил глаза",
+    "googlyEyesContent": "{senderName} отправил(а) вам выпученные глаза",
     "@googlyEyesContent": {
         "type": "String",
         "placeholders": {
@@ -1915,11 +1900,11 @@
     "chatDescriptionHasBeenChanged": "Описание чата изменено",
     "noChatDescriptionYet": "Описание чата не создано.",
     "invalidServerName": "Недопустимое имя сервера",
-    "optionalRedactReason": "(Необязательно) Причина редактирования...",
-    "redactMessageDescription": "Сообщение будет отредактировано для всех участников. Это необратимо.",
+    "optionalRedactReason": "(Необязательно) Причина удаления...",
+    "redactMessageDescription": "Сообщение будет удалено для всех участников. Это необратимо.",
     "messagesStyle": "Сообщения:",
     "shareInviteLink": "Поделиться приглашением",
-    "redactedBy": "{username} отредактировал это событие",
+    "redactedBy": "Удалено пользователем {username}",
     "@redactedBy": {
         "type": "String",
         "placeholders": {
@@ -1928,7 +1913,7 @@
             }
         }
     },
-    "redactedByBecause": "{username} отредактировал это событие. Причина: \"{reason}\"",
+    "redactedByBecause": "Удалено пользователем {username}. Причина: «{reason}»",
     "@redactedByBecause": {
         "type": "String",
         "placeholders": {
@@ -1945,7 +1930,7 @@
     "invite": "Пригласить",
     "inviteGroupChat": "📨 Вас пригласили в групповой чат",
     "invalidInput": "Недопустимый ввод!",
-    "wrongPinEntered": "Wrong pin entered! Try again in {seconds} seconds...",
+    "wrongPinEntered": "Неверный PIN-код! Повторите попытку через {seconds} сек.",
     "@wrongPinEntered": {
         "type": "String",
         "placeholders": {
@@ -1959,13 +1944,13 @@
         "type": "String",
         "placeholders": {}
     },
-    "banUserDescription": "Заблокированные в чате пользователи не смогут перезайти в чат, пока они не будут разблокированны.",
+    "banUserDescription": "Пользователь будет заблокирован в чате и не сможет вернуться, пока его не разблокируют.",
     "removeDevicesDescription": "Вы выйдете с этого устройства и больше не будете получать сообщения.",
     "unbanUserDescription": "Пользователь сможет при желании зайти в чат снова.",
     "pushNotificationsNotAvailable": "Push-уведомления недоступны",
-    "makeAdminDescription": "Как только вы назначите этого пользователя администратором, вы не сможете этого отменить, так как их права доступа и ваши будут одинаковы.",
+    "makeAdminDescription": "Назначив пользователя администратором, вы, возможно, не сможете это отменить: у него будут те же права, что и у вас.",
     "archiveRoomDescription": "Чат переместится в архив. Другим пользователям будет видно, что вы вышли из чата.",
-    "hasKnocked": "🚪 {user} постучался",
+    "hasKnocked": "🚪 {user} постучался(ась)",
     "@hasKnocked": {
         "placeholders": {
             "user": {
@@ -1975,15 +1960,15 @@
     },
     "learnMore": "Узнать больше",
     "roomUpgradeDescription": "Затем чат будет воссоздан с новой версией комнаты. Все участники будут уведомлены о необходимости перейти в новый чат. Вы можете узнать больше о версиях комнат на https://spec.matrix.org/latest/rooms/",
-    "pleaseEnterANumber": "Пожалуйста введите число больше 0",
-    "kickUserDescription": "Пользователь будет изгнан из чата, но не будет заблокирован. В публичных чатах пользователь может перезайти когда угодно.",
-    "blockListDescription": "Вы можете заглушить тревожащих вас пользователей. Вы не будете получать сообщения или приглашения в комнату от пользователей из вашего личного чёрного списка.",
+    "pleaseEnterANumber": "Пожалуйста, введите число больше 0",
+    "kickUserDescription": "Пользователь будет удалён из чата, но не заблокирован. В публичный чат он сможет вернуться в любой момент.",
+    "blockListDescription": "Вы можете заглушить пользователей, которые вам мешают. Вы не будете получать сообщения и приглашения в комнаты от пользователей из вашего чёрного списка.",
     "blockedUsers": "Заглушённые пользователи",
     "block": "Заглушить",
-    "blockUsername": "Игнорировать имя пользователя",
+    "blockUsername": "Игнорировать пользователя",
     "createGroupAndInviteUsers": "Создать и начать приглашать",
-    "groupCanBeFoundViaSearch": "Группа может быть найдена поиском",
-    "noUsersFoundWithQuery": "К сожалению пользователей с именем \"{query}\" не найдено. Убедитесь, что вы не совершили опечатку.",
+    "groupCanBeFoundViaSearch": "Группу можно найти через поиск",
+    "noUsersFoundWithQuery": "К сожалению, по запросу «{query}» пользователи не найдены. Проверьте, нет ли опечатки.",
     "@noUsersFoundWithQuery": {
         "type": "String",
         "placeholders": {
@@ -1992,11 +1977,11 @@
             }
         }
     },
-    "yourGlobalUserIdIs": "Ваш глобальный идентификатор - ",
+    "yourGlobalUserIdIs": "Ваш глобальный ID: ",
     "commandHint_sendraw": "Отправить сырой json",
-    "wrongRecoveryKey": "Простите... судя по всему это неверный ключ восстановления.",
+    "wrongRecoveryKey": "Похоже, это неверный ключ восстановления.",
     "groupName": "Название группы",
-    "databaseMigrationTitle": "База данных оптимизированна",
+    "databaseMigrationTitle": "База данных оптимизируется",
     "searchChatsRooms": "Поиск #чатов, @людей...",
     "databaseMigrationBody": "Пожалуйста, подождите. Это может занять некоторое время.",
     "publicSpaces": "Публичные пространства",
@@ -2006,7 +1991,7 @@
     "newPassword": "Новый пароль",
     "passwordsDoNotMatch": "Пароли не совпадают",
     "select": "Выбрать",
-    "pleaseChooseAStrongPassword": "Пожалуйста, подберите сильный пароль",
+    "pleaseChooseAStrongPassword": "Придумайте надёжный пароль",
     "leaveEmptyToClearStatus": "Чтобы очистить статус, оставьте поле пустым.",
     "joinSpace": "Присоединиться к пространству",
     "searchForUsers": "Поиск @пользователей...",
@@ -2037,13 +2022,13 @@
         }
     },
     "addChatOrSubSpace": "Добавить чат или субпространство",
-    "sendReadReceipts": "Отправка квитанций о прочтении",
+    "sendReadReceipts": "Отправлять отчёты о прочтении",
     "verifyOtherUser": "🔐 Подтвердить другого пользователя",
     "verifyOtherDevice": "🔐 Подтвердить другое устройство",
     "sendReadReceiptsDescription": "Другие участники чата могут видеть, когда вы прочитали сообщение.",
-    "verifyOtherUserDescription": "Если вы подтвердите другого пользователя, то вы можете быть уверены зная, кому вы действительно пишете. 💪\n\nКогда вы начинаете подтверждение, вы и другой пользователь увидите всплывающее окно в приложении. Там вы увидите ряд чисел или эмодзи, которые вы должны сравнить друг с другом.\n\nЛучший способ сделать это - встретиться в реальной жизни или по видео звонку. 👭",
-    "verifyOtherDeviceDescription": "При подтверждении другого устройства эти устройства могут обмениваться ключами, повышая общую безопасность. 💪 При запуске подтверждения в приложении на обоих устройствах появится всплывающее окно. Там вы увидите ряд чисел или эмодзи, которые вы должны сравнить друг с другом. Лучше иметь оба устройства под рукой перед началом проверки. 🤳",
-    "formattedMessagesDescription": "Отображать содержимое расширенных сообщений, такой как жирный текст, с помощью Markdown.",
+    "verifyOtherUserDescription": "Подтвердив другого пользователя, вы будете уверены, что знаете, кому на самом деле пишете. 💪\n\nКогда вы начнёте подтверждение, у вас и у собеседника в приложении появится всплывающее окно. В нём будет набор эмодзи или чисел, которые нужно сравнить друг с другом.\n\nЛучше всего делать это при встрече или по видеозвонку. 👭",
+    "verifyOtherDeviceDescription": "Подтверждённые устройства могут обмениваться ключами, что повышает общую безопасность. 💪 Когда вы начнёте подтверждение, на обоих устройствах в приложении появится всплывающее окно. В нём будет набор эмодзи или чисел, которые нужно сравнить друг с другом. Перед началом подтверждения держите оба устройства под рукой. 🤳",
+    "formattedMessagesDescription": "Показывать форматирование сообщений, например жирный текст, с помощью Markdown.",
     "acceptedKeyVerification": "{sender} принял(а) подтверждение ключей",
     "@acceptedKeyVerification": {
         "type": "String",
@@ -2053,7 +2038,7 @@
             }
         }
     },
-    "canceledKeyVerification": "{sender} отклонил(а) подтверждение ключей",
+    "canceledKeyVerification": "{sender} отменил(а) подтверждение ключей",
     "@canceledKeyVerification": {
         "type": "String",
         "placeholders": {
@@ -2103,19 +2088,19 @@
     "incomingMessages": "Входящие сообщения",
     "stickers": "Стикеры",
     "discover": "Исследовать",
-    "globalChatId": "ID глобального чата",
-    "customEmojisAndStickersBody": "Добавить или поделиться пользовательскими эмодзи или стикерами, которые могут быть применены в любом чате.",
+    "globalChatId": "Глобальный ID чата",
+    "customEmojisAndStickersBody": "Добавляйте свои эмодзи и стикеры и делитесь ими — их можно использовать в любом чате.",
     "knocking": "Стучаться",
     "accessAndVisibility": "Доступность и видимость",
-    "publicChatAddresses": "Адресы публичного чата",
+    "publicChatAddresses": "Адреса публичного чата",
     "accessAndVisibilityDescription": "Кому разрешено войти в этот чат и как этот чат может быть обнаружен.",
     "noDatabaseEncryption": "Шифрование базы данных не поддерживается на этой платформе",
-    "appLockDescription": "Заблокировать приложение когда не используется пин код",
+    "appLockDescription": "Блокировать приложение PIN-кодом, когда оно не используется",
     "calls": "Звонки",
     "customEmojisAndStickers": "Пользовательские эмодзи и стикеры",
-    "hideRedactedMessages": "Скрыть редактированные сообщения",
+    "hideRedactedMessages": "Скрывать удалённые сообщения",
     "hideInvalidOrUnknownMessageFormats": "Скрыть неправильные или неизвестные форматы сообщения",
-    "hideRedactedMessagesBody": "Если кто-то редактирует сообщение, оно будет скрыто в чате.",
+    "hideRedactedMessagesBody": "Если кто-то удалит сообщение, оно больше не будет видно в чате.",
     "passwordRecoverySettings": "Настройки восстановления пароля",
     "knock": "Постучаться",
     "usersMustKnock": "Пользователи должны постучаться",
@@ -2141,7 +2126,7 @@
             }
         }
     },
-    "searchMore": "Найти еще...",
+    "searchMore": "Найти ещё...",
     "gallery": "Галерея",
     "files": "Файлы",
     "swipeRightToLeftToReply": "Для ответа проведите справа налево",
@@ -2204,7 +2189,7 @@
     "doesNotSeemToBeAValidHomeserver": "Этот домашний сервер выглядит несовместимым. Нет ли в ссылке опечаток?",
     "noMoreChatsFound": "Больше чатов не обнаружено...",
     "oneOfYourDevicesIsNotVerified": "Одно из ваших устройств не подтверждено",
-    "chatPermissionsDescription": "Задайте уровень власти, необходимый для совершения определённых действий в этом чате. Уровни власти 0, 50 и 100 обычно означают пользователей, модераторов и администраторов соответственно, но любая градация также возможна.",
+    "chatPermissionsDescription": "Задайте уровень прав, необходимый для определённых действий в этом чате. Уровни 0, 50 и 100 обычно означают пользователей, модераторов и администраторов, но возможны и любые другие значения.",
     "sendRoomNotifications": "Упоминать @room",
     "calculatingFileSize": "Вычисление размера файла...",
     "sendingAttachment": "Отправка вложения...",
@@ -2212,7 +2197,7 @@
     "changeTheCanonicalRoomAlias": "Изменить основной общедоступный адрес чата",
     "loginWithMatrixId": "Войти через Matrix ID",
     "serverInformation": "Информация о сервере:",
-    "noContactInformationProvided": "Сервер не предоставляет никакой правдивой контактной информации",
+    "noContactInformationProvided": "Сервер не предоставляет действительной контактной информации",
     "aboutHomeserver": "О сервере {homeserver}",
     "@aboutHomeserver": {
         "type": "String",
@@ -2227,20 +2212,20 @@
     "pleaseFillOut": "Пожалуйста, заполните",
     "invalidUrl": "Неверный url-адрес",
     "addLink": "Добавить ссылку",
-    "italicText": "Italic",
+    "italicText": "Курсив",
     "unableToJoinChat": "Невозможно присоединиться к чату. Возможно, другая сторона уже закончила разговор.",
     "continueText": "Продолжить",
     "blur": "Размытие:",
     "opacity": "Прозрачность:",
     "setWallpaper": "Установить обои",
     "manageAccount": "Управление аккаунтом",
-    "contactServerAdmin": "Админ сервера",
-    "contactServerSecurity": "Безопасность контактов сервера",
+    "contactServerAdmin": "Связаться с администратором сервера",
+    "contactServerSecurity": "Связаться со службой безопасности сервера",
     "supportPage": "Страница поддержки",
     "name": "Имя",
     "version": "Версия",
     "website": "Сайт",
-    "sendImages": "Отправить {count} изображение",
+    "sendImages": "{count, plural, one{Отправить {count} изображение} few{Отправить {count} изображения} many{Отправить {count} изображений} other{Отправить {count} изображения}}",
     "@sendImages": {
         "type": "String",
         "placeholders": {
@@ -2257,13 +2242,13 @@
     "roomNotificationSettings": "Настройки уведомлений комнаты",
     "notificationRuleContainsUserName": "Содержит имя пользователя",
     "notificationRuleMaster": "Отключить все уведомления",
-    "notificationRuleSuppressNoticesDescription": "Отключить уведомления от автоматизированных клиентов, таких как боты.",
+    "notificationRuleSuppressNoticesDescription": "Отключает уведомления от автоматических клиентов, например ботов.",
     "notificationRuleInviteForMe": "Приглашение для меня",
-    "notificationRuleMemberEventDescription": "Отключить уведомления о событиях о членстве.",
+    "notificationRuleMemberEventDescription": "Отключает уведомления об изменениях состава участников.",
     "notificationRuleIsRoomMention": "Упоминание комнаты",
-    "notificationRuleReactionDescription": "Отключить уведомления о реакциях.",
+    "notificationRuleReactionDescription": "Отключает уведомления о реакциях.",
     "notificationRuleCall": "Звонок",
-    "notificationRuleSuppressEditsDescription": "Отключить уведомления о отредактированных сообщениях.",
+    "notificationRuleSuppressEditsDescription": "Отключает уведомления об отредактированных сообщениях.",
     "notificationRuleEncrypted": "Зашифровано",
     "more": "Больше",
     "synchronizingPleaseWaitCounter": " Синхронизация… ({percentage}%)",
@@ -2286,17 +2271,17 @@
     },
     "contentNotificationSettings": "Настройки уведомлений по тексту",
     "generalNotificationSettings": "Общие настройки уведомлений",
-    "userSpecificNotificationSettings": "Настроки уведомлений пользователя",
+    "userSpecificNotificationSettings": "Настройки уведомлений для пользователей",
     "otherNotificationSettings": "Другие настройки уведомлений",
     "notificationRuleContainsUserNameDescription": "Уведомляет пользователя, когда сообщение содержит его имя пользователя.",
-    "notificationRuleMasterDescription": "Перекрывает все другие правила и отключает все уведомления.",
-    "notificationRuleSuppressNotices": "Отключить автоматические сообщения",
+    "notificationRuleMasterDescription": "Имеет приоритет над остальными правилами и отключает все уведомления.",
+    "notificationRuleSuppressNotices": "Не уведомлять об автоматических сообщениях",
     "notificationRuleIsUserMention": "Упоминание пользователя",
     "notificationRuleContainsDisplayName": "Содержит отображаемое имя",
     "notificationRuleReaction": "Реакция",
     "takeAPhoto": "Снять фото",
     "recordAVideo": "Записать видео",
-    "enterNewChat": "Введите новый чат",
+    "enterNewChat": "Перейти в новый чат",
     "otherPartyNotLoggedIn": "Другая сторона в настоящее время не вошла в систему и поэтому не может получать сообщения!",
     "open": "Открыть",
     "waitingForServer": "Ожидание сервера...",
@@ -2317,27 +2302,27 @@
         }
     },
     "checkList": "Контрольный список",
-    "changedTheChatDescription": "{username} изменил описание чата",
-    "changedTheChatName": "{username} изменил(а) имя чата",
-    "notificationRuleMemberEvent": "Мероприятие участника",
+    "changedTheChatDescription": "{username} изменил(а) описание чата",
+    "changedTheChatName": "{username} изменил(а) название чата",
+    "notificationRuleMemberEvent": "Изменения участников",
     "notificationRuleIsUserMentionDescription": "Уведомляет пользователя, когда он упоминается непосредственно в сообщении.",
-    "notificationRuleContainsDisplayNameDescription": "Уведомляет пользователя, когда сообщение содержит его имя отображения.",
+    "notificationRuleContainsDisplayNameDescription": "Уведомляет пользователя, когда сообщение содержит его отображаемое имя.",
     "notificationRuleIsRoomMentionDescription": "Уведомляет пользователя о наличии упоминания о комнате.",
     "notificationRuleRoomnotif": "Уведомление о комнате",
     "notificationRuleRoomnotifDescription": "Уведомляет пользователя, когда сообщение содержит '@room'.",
-    "notificationRuleTombstone": "Надгробный камень",
+    "notificationRuleTombstone": "Закрытие комнаты",
     "notificationRuleTombstoneDescription": "Уведомляет пользователя о сообщениях о деактивации комнаты.",
     "notificationRuleRoomServerAcl": "ACL сервера комнаты",
-    "notificationRuleRoomServerAclDescription": "Удаляет уведомления о списках контроля доступа к серверу комнат (ACL).",
-    "notificationRuleSuppressEdits": "Подавление правки",
-    "notificationRuleRoomOneToOneDescription": "Уведомляет пользователя о сообщениях в разделах один на один.",
+    "notificationRuleRoomServerAclDescription": "Отключает уведомления об изменении списков доступа серверов (ACL) в комнате.",
+    "notificationRuleSuppressEdits": "Не уведомлять о правках",
+    "notificationRuleRoomOneToOneDescription": "Уведомляет пользователя о сообщениях в комнатах «один на один».",
     "notificationRuleMessageDescription": "Уведомляет пользователя об общих сообщениях.",
     "notificationRuleEncryptedDescription": "Уведомляет пользователя о сообщениях в зашифрованных комнатах.",
-    "notificationRuleJitsi": "Джици",
+    "notificationRuleJitsi": "Jitsi",
     "notificationRuleJitsiDescription": "Уведомляет пользователя о событиях виджета Jitsi.",
-    "notificationRuleServerAcl": "Запретить события ACL сервера",
-    "notificationRuleServerAclDescription": "Удаляет уведомления о событиях ACL сервера.",
-    "sentVoiceMessage": "️🎙️ {duration} - Голосовое сообщение от {sender}",
+    "notificationRuleServerAcl": "Не уведомлять о событиях ACL сервера",
+    "notificationRuleServerAclDescription": "Отключает уведомления о событиях ACL сервера.",
+    "sentVoiceMessage": "🎙️ {duration} - Голосовое сообщение от {sender}",
     "@sentVoiceMessage": {
         "type": "String",
         "placeholders": {
@@ -2352,26 +2337,26 @@
     "deletePushRuleCanNotBeUndone": "Если вы удалите эту настройку уведомлений, это невозможно отменить.",
     "shareKeysWith": "Поделиться ключами с...",
     "shareKeysWithDescription": "Каким устройствам следует доверять, чтобы они могли читать ваши сообщения в зашифрованных чатах?",
-    "crossVerifiedDevicesIfEnabled": "Кросс-верифицированные устройства, если они включены",
-    "crossVerifiedDevices": "Кросс-верифицированные устройства",
-    "verifiedDevicesOnly": "Только проверенные устройства",
+    "crossVerifiedDevicesIfEnabled": "Устройства с перекрёстным подтверждением, если оно включено",
+    "crossVerifiedDevices": "Устройства с перекрёстным подтверждением",
+    "verifiedDevicesOnly": "Только подтверждённые устройства",
     "optionalMessage": "(Необязательно) сообщение...",
     "notSupportedOnThisDevice": "Не поддерживается на этом устройстве",
-    "approve": "Утверждать",
+    "approve": "Одобрить",
     "youHaveKnocked": "Вы постучали",
     "pleaseWaitUntilInvited": "Пожалуйста, подождите, пока кто-нибудь из комнаты не пригласит вас.",
-    "commandHint_logout": "Выйти из текущего устройства",
-    "commandHint_logoutall": "Выйти из всех активных устройств",
-    "displayNavigationRail": "Показать навигационный рельс на мобильном устройстве",
+    "commandHint_logout": "Выйти на текущем устройстве",
+    "commandHint_logoutall": "Выйти на всех активных устройствах",
+    "displayNavigationRail": "Показывать боковую панель навигации на телефоне",
     "customReaction": "Пользовательская реакция",
     "moreEvents": "Больше событий",
-    "declineInvitation": "Отказаться от приглашения",
+    "declineInvitation": "Отклонить приглашение",
     "noMessagesYet": "Пока нет сообщений",
-    "longPressToRecordVoiceMessage": "Нажмите длиннее, чтобы записать голосовое сообщение.",
+    "longPressToRecordVoiceMessage": "Нажмите и удерживайте, чтобы записать голосовое сообщение.",
     "pause": "Пауза",
     "resume": "Продолжить",
-    "removeFromSpaceDescription": "Чат будет удален из пространства, но все равно появится в вашем списке чатов.",
-    "countChats": "{chats} чатов",
+    "removeFromSpaceDescription": "Чат будет удалён из пространства, но останется в вашем списке чатов.",
+    "countChats": "{chats, plural, one{{chats} чат} few{{chats} чата} many{{chats} чатов} other{{chats} чата}}",
     "@countChats": {
         "type": "String",
         "placeholders": {
@@ -2380,7 +2365,7 @@
             }
         }
     },
-    "spaceMemberOf": "Участник пространства из {spaces}",
+    "spaceMemberOf": "Участники пространства {spaces}",
     "@spaceMemberOf": {
         "type": "String",
         "placeholders": {
@@ -2389,7 +2374,7 @@
             }
         }
     },
-    "spaceMemberOfCanKnock": "Участник пространства из {spaces} может постучать",
+    "spaceMemberOfCanKnock": "Участники пространства {spaces} могут постучаться",
     "@spaceMemberOfCanKnock": {
         "type": "String",
         "placeholders": {
@@ -2401,29 +2386,29 @@
     "startPoll": "Начать опрос",
     "endPoll": "Завершить опрос",
     "answersVisible": "Ответы видны",
-    "pollQuestion": "Вопрос по опросу",
+    "pollQuestion": "Вопрос опроса",
     "answerOption": "Вариант ответа",
     "addAnswerOption": "Добавить вариант ответа",
     "allowMultipleAnswers": "Разрешить несколько ответов",
-    "pollHasBeenEnded": "Опрос завершен",
+    "pollHasBeenEnded": "Опрос завершён",
     "answersWillBeVisibleWhenPollHasEnded": "Ответы будут видны после завершения опроса",
     "replyInThread": "Ответить в ветке",
     "thread": "Ветка",
     "backToMainChat": "Вернуться в основной чат",
     "saveChanges": "Сохранить изменения",
-    "createSticker": "Создать стикер или эмоджи",
+    "createSticker": "Создать стикер или эмодзи",
     "useAsSticker": "Использовать как стикер",
-    "useAsEmoji": "Использовать в качестве эмоджи",
-    "stickerPackNameAlreadyExists": "Имя набора стикеров уже существует",
-    "newStickerPack": "Новая упаковка стикеров",
-    "stickerPackName": "Имя упаковки стикеров",
+    "useAsEmoji": "Использовать как эмодзи",
+    "stickerPackNameAlreadyExists": "Набор стикеров с таким названием уже существует",
+    "newStickerPack": "Новый набор стикеров",
+    "stickerPackName": "Название набора стикеров",
     "attribution": "Атрибуция",
     "skipChatBackup": "Пропустить резервную копию чата",
     "skipChatBackupWarning": "Вы уверены? Без включения резервного копирования чата вы можете потерять доступ к своим сообщениям, если переключите устройство.",
     "createNewAccount": "Создать новый аккаунт",
-    "theProcessWasCanceled": "Процесс был отменен.",
+    "theProcessWasCanceled": "Процесс был отменён.",
     "noMoreResultsFound": "Ничего не найдено",
-    "countInvited": "{count} приглашенных",
+    "countInvited": "{count, plural, one{{count} приглашённый} few{{count} приглашённых} many{{count} приглашённых} other{{count} приглашённого}}",
     "@countInvited": {
         "type": "String",
         "placeholders": {
@@ -2432,7 +2417,7 @@
             }
         }
     },
-    "loadCountMoreParticipants": "Загрузить ещё {count} участников",
+    "loadCountMoreParticipants": "Загрузить ещё {count, plural, one{{count} участника} few{{count} участников} many{{count} участников} other{{count} участника}}",
     "@loadCountMoreParticipants": {
         "type": "String",
         "placeholders": {
@@ -2450,13 +2435,13 @@
             }
         }
     },
-    "logs": "Архивные записи",
+    "logs": "Журналы",
     "advancedConfigs": "Расширенные Настройки",
     "advancedConfigurations": "Расширенные конфигурации",
     "signUpGreeting": "Создайте аккаунт в 5S Chat и начните общение!",
-    "signInGreeting": "У вас есть уже аккаунт в Matrix? Добро пожаловать! Выберите свой сервер и войдите.",
+    "signInGreeting": "У вас уже есть аккаунт Matrix? С возвращением! Выберите свой сервер и войдите.",
     "join": "Присоединиться",
-    "countFiles": "{count} файлов",
+    "countFiles": "{count, plural, one{{count} файл} few{{count} файла} many{{count} файлов} other{{count} файла}}",
     "@countFiles": {
         "placeholders": {
             "count": {
@@ -2464,7 +2449,7 @@
             }
         }
     },
-    "unreadChatsInApp": "{appname}: {unread} непрочитанных чатов",
+    "unreadChatsInApp": "{appname} — непрочитанных чатов: {unread}",
     "@unreadChatsInApp": {
         "type": "String",
         "placeholders": {
@@ -2476,12 +2461,12 @@
             }
         }
     },
-    "thereAreCountUsersBlocked": "Сейчас {count} пользователей заблокировано.",
+    "thereAreCountUsersBlocked": "Сейчас заблокировано пользователей: {count}.",
     "@thereAreCountUsersBlocked": {
         "type": "String",
         "count": {}
     },
-    "countVotes": "{count, plural, =1{Один голос} other{{count} голоса(-ов)}}",
+    "countVotes": "{count, plural, =1{Один голос} one{{count} голос} few{{count} голоса} many{{count} голосов} other{{count} голоса}}",
     "@countVotes": {
         "type": "int",
         "placeholders": {
@@ -2490,7 +2475,7 @@
             }
         }
     },
-    "countReplies": "{count, plural, =1{Один ответ} other{{count} ответа(-ов)}}",
+    "countReplies": "{count, plural, =1{Один ответ} one{{count} ответ} few{{count} ответа} many{{count} ответов} other{{count} ответа}}",
     "@countReplies": {
         "type": "int",
         "placeholders": {
@@ -2499,7 +2484,7 @@
             }
         }
     },
-    "chatSearchedUntil": "Чат индексируется до {time}",
+    "chatSearchedUntil": "Поиск в чате выполнен до {time}",
     "@chatSearchedUntil": {
         "type": "String",
         "placeholders": {
@@ -2510,58 +2495,58 @@
     },
     "federationBaseUrl": "Основной URL федерации",
     "clientWellKnownInformation": "Client-Well-Known Информация:",
-    "baseUrl": "URL ссылка базы",
+    "baseUrl": "Базовый URL",
     "identityServer": "Сервер профилей:",
     "signIn": "Войти",
     "searchOrEnterHomeserverAddress": "Искать или ввести адрес сервера",
     "matrixId": "Идентификатор Matrix",
-    "setPowerLevel": "Поставить уровень мощности",
+    "setPowerLevel": "Задать уровень прав",
     "makeModerator": "Сделать модератором",
     "makeAdmin": "Сделать админом",
     "removeModeratorRights": "Убрать права у модератора",
     "removeAdminRights": "Убрать права админа",
-    "powerLevel": "Уровень мощности",
-    "setPowerLevelDescription": "Уровни мощности определяют, что участник может делать в этой комнате и иногда варьируются в диапозоне 0 и 100.",
+    "powerLevel": "Уровень прав",
+    "setPowerLevelDescription": "Уровень прав определяет, что участник может делать в этой комнате. Обычно он от 0 до 100.",
     "owner": "Владелец",
     "mute": "Заглушить",
     "@mute": {
         "description": "This should be a very short string because there is not much space in the button!"
     },
-    "createNewChat": "Сделать новый чат",
+    "createNewChat": "Создать новый чат",
     "reset": "Сброс",
     "supportFluffyChat": "Поддержать FluffyChat",
     "support": "Поддержать",
-    "setLowPriority": "Установить маленький приоритет",
+    "setLowPriority": "Установить низкий приоритет",
     "unsetLowPriority": "Отменить низкий приоритет",
-    "playSoundOnNotification": "Проиграть звук, когда уведомления",
+    "playSoundOnNotification": "Воспроизводить звук при уведомлении",
     "addTag": "Добавить тег",
     "removeTag": "Удалить тег",
     "tagName": "Название тега",
     "createNewTag": "Создать новый тег",
     "appSubtitle": "Добро пожаловать в 5S Chat",
-    "passphrasesMatch": "Кодовые фразы соовпадают",
+    "passphrasesMatch": "Кодовые фразы совпадают",
     "@passphrasesMatch": {
         "type": "String",
         "placeholders": {}
     },
-    "discardEdits": "У вас есть не внесённые изменения. Отменить внесённые изменения?",
+    "discardEdits": "Есть несохранённые изменения. Отменить их?",
     "@discardEdits": {
         "type": "String",
         "placeholders": {}
     },
-    "noKeysTransmitted": "Ключи не переданы. Пожалуйста, попробуйте еще раз.",
+    "noKeysTransmitted": "Ключи не переданы. Пожалуйста, попробуйте ещё раз.",
     "@noKeysTransmitted": {
         "type": "String",
         "placeholders": {}
     },
     "showMore": "Показать больше",
     "showLess": "Показать меньше",
-    "possibleByYou": "Этот релиз был только возможен из-за вашей поддержки. FluffyChat остаётся бесплатным, с открытым исходным кодом, и полностью управляется сообществом.",
-    "hideRoomsInSpaces": "Спрятать комнаты которые в пространстве",
+    "possibleByYou": "Этот выпуск стал возможен благодаря вашей поддержке. FluffyChat остаётся бесплатным, открытым и полностью развивается сообществом.",
+    "hideRoomsInSpaces": "Скрывать комнаты, входящие в пространства",
     "chatListSpaceBadgeNotch": "Бейдж пространства в вырезе",
     "chatListSpaceBadgeNotchDescription": "Вырез в аватаре чата под бейдж пространства вместо рамки вокруг него",
-    "interactiveVerification": "Интерактивная верификация",
-    "waitingForKeys": "Ожидание ключей... Пожалуйста оставьте другое устройство активным.",
+    "interactiveVerification": "Интерактивное подтверждение",
+    "waitingForKeys": "Ожидание ключей... Пожалуйста, оставьте другое устройство активным.",
     "@waitingForKeys": {
         "type": "String",
         "placeholders": {}
@@ -2569,13 +2554,13 @@
     "edited": "(изменено)",
     "encryptedMessage": "Написать сообщение...",
     "unencryptedMessage": "Написать сообщение...",
-    "passphraseNumberRequirement": "Имеет одну цифру.",
+    "passphraseNumberRequirement": "Содержит хотя бы одну цифру.",
     "@passphraseNumberRequirement": {
         "type": "String",
         "placeholders": {}
     },
     "messageCanOnlyBeReadByUser": "Ваше сообщение зашифровано сквозным шифрованием и только этот пользователь может его прочитать:",
-    "noUserKeyFound": "Не нашлось ключа пользователя",
+    "noUserKeyFound": "Ключ пользователя не найден",
     "@noUserKeyFound": {
         "type": "String",
         "placeholders": {}
@@ -2590,9 +2575,9 @@
         }
     },
     "deviceIdentityKey": "Ключ идентификации устройства",
-    "encrypting": "Шифруем",
-    "couldNotBeSent": "Не возможно отправить",
-    "restoreBootstrapDevicesDescription": "Пожалуйста выберите одно своё другое устройтво, чтобы верифицировать эту сессию:",
+    "encrypting": "Шифрование",
+    "couldNotBeSent": "Не удалось отправить",
+    "restoreBootstrapDevicesDescription": "Выберите другое своё устройство, чтобы подтвердить этот сеанс:",
     "@restoreBootstrapDevicesDescription": {
         "type": "String",
         "placeholders": {}
@@ -2612,7 +2597,7 @@
         "type": "String",
         "placeholders": {}
     },
-    "resetAccountWarning": "Когда вы сбрасываете ваш аккаунт, то вы потеряете доступ к вашим старым сообщениям навсегда. Все ваши устройства нужны будут верифицированы опять. Пожалуйста, только делайте это действие, когда у вас нет устройств, чтобы верифицировать вашу сессию и вы потеряли свой ключ восстановления и кодовую фразу!",
+    "resetAccountWarning": "После сброса аккаунта вы навсегда потеряете доступ к старым сообщениям, а все ваши устройства придётся подтвердить заново. Делайте это, только если у вас не осталось других устройств для подтверждения сеанса и вы потеряли ключ восстановления и кодовую фразу!",
     "@resetAccountWarning": {
         "type": "String",
         "placeholders": {}
@@ -2627,17 +2612,17 @@
         "type": "String",
         "placeholders": {}
     },
-    "passphraseLengthRequirement": "Хотя-бы 12 символов.",
+    "passphraseLengthRequirement": "Не менее 12 символов.",
     "@passphraseLengthRequirement": {
         "type": "String",
         "placeholders": {}
     },
-    "passphraseUpperAndLowerCaseRequirement": "Имеет прописные и строчные буквы.",
+    "passphraseUpperAndLowerCaseRequirement": "Содержит прописные и строчные буквы.",
     "@passphraseUpperAndLowerCaseRequirement": {
         "type": "String",
         "placeholders": {}
     },
-    "passphraseSpecialCharactersRequirement": "Имеет специальные символы.",
+    "passphraseSpecialCharactersRequirement": "Содержит специальные символы.",
     "@passphraseSpecialCharactersRequirement": {
         "type": "String",
         "placeholders": {}
@@ -2648,7 +2633,7 @@
         "placeholders": {}
     },
     "youAreReadyToStart": "Вы готовы начать!",
-    "knownSince": "Известен с:{date}",
+    "knownSince": "Известен с: {date}",
     "@knownSince": {
         "type": "String",
         "placeholders": {
@@ -2660,12 +2645,12 @@
     "today": "Сегодня",
     "sending": "Отправляется",
     "generatingThumbnail": "Генерируется миниатюра",
-    "uploading": "Загружаем",
+    "uploading": "Загрузка",
     "yesterday": "Вчера",
-    "showThumbnailsInTimeline": "Показать миниатюры картинок и видео",
-    "appDescription": "Привет! Это 5SYSTEMS. Приложение сделано на основе FluffyChat. Авторизуйтесь через наш сервер m.5systems.ru, который совместим с https://matrix.org, и пользуйтесь огромной децентрализованной сетью обмена сообщениями!",
+    "showThumbnailsInTimeline": "Показывать миниатюры изображений и видео",
+    "appDescription": "Безопасный и удобный мессенджер для вашей команды. Рады видеть вас!",
     "interactiveVerificationDescription": "Если вы находитесь рядом с собеседником, либо общаетесь с помощью другого надёжного канала связи, вы можете подтвердить ваши устройства, сравнив ключи шифрования или эмодзи.",
-    "countUnverifiedDevices": "В этом чате {count} устройств не подтверждены.",
+    "countUnverifiedDevices": "{count, plural, one{В этом чате {count} неподтверждённое устройство.} few{В этом чате {count} неподтверждённых устройства.} many{В этом чате {count} неподтверждённых устройств.} other{В этом чате {count} неподтверждённого устройства.}}",
     "@countUnverifiedDevices": {
         "type": "int",
         "placeholders": {
@@ -2675,7 +2660,7 @@
         }
     },
     "messageCanOnlyBeReadByUsers": "Ваши сообщения защищены сквозным шифрованием, и их могут прочесть только:",
-    "restoreBootstrapEmptyDevicesDescription": "Пожалуйста, введите код доступа или ключ восстановления, чтобы подтвердить устройство и получить доступ к зашифрованным сообщениям.",
+    "restoreBootstrapEmptyDevicesDescription": "Введите кодовую фразу или ключ восстановления, чтобы подтвердить это устройство и получить доступ к резервной копии зашифрованных сообщений.",
     "@restoreBootstrapEmptyDevicesDescription": {
         "type": "String",
         "placeholders": {}
@@ -2695,12 +2680,12 @@
         "type": "String",
         "placeholders": {}
     },
-    "newPassphraseDescription": "5S Chat защищает ваши сообщения сквозным шифрованием. Чтобы не потерять ваши сообщения, пожалуйста, придумайте сильную кодовую фразу, чтобы защитить вашу крипто-идентичность и легко восстанавливать зашифрованные сообщения.",
+    "newPassphraseDescription": "5S Chat защищает сообщения сквозным шифрованием. Чтобы не потерять их, придумайте надёжную кодовую фразу: она защитит вашу крипто-идентичность и резервную копию зашифрованных сообщений.",
     "@newPassphraseDescription": {
         "type": "String",
         "placeholders": {}
     },
-    "storeRecoveryKeyDescription": "Имейте в виду, что ваш ключ восстановления позволяет полностью восстановить ваши зашифрованные сообщения и крипто-идентичность.",
+    "storeRecoveryKeyDescription": "Запишите ключ восстановления: он понадобится, чтобы восстановить зашифрованные сообщения и крипто-идентичность.",
     "@storeRecoveryKeyDescription": {
         "type": "String",
         "placeholders": {}
@@ -2720,5 +2705,78 @@
         "type": "String",
         "placeholders": {}
     },
-    "messageNotDecryptable": "Не удалось расшифровать сообщение"
+    "messageNotDecryptable": "Не удалось расшифровать сообщение",
+    "editImage": "Редактировать изображение",
+    "@editImage": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "rotateLeft": "Повернуть влево",
+    "@rotateLeft": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "rotateRight": "Повернуть вправо",
+    "@rotateRight": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "mirror": "Отразить",
+    "@mirror": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "save": "Сохранить",
+    "@save": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "draw": "Рисовать",
+    "@draw": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "undo": "Отменить",
+    "@undo": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "clear": "Очистить",
+    "@clear": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "eraser": "Ластик",
+    "@eraser": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "crop": "Обрезать",
+    "@crop": {
+        "type": "String",
+        "placeholders": {}
+    },
+    "resetRecoveryKey": "Сбросить ключ восстановления",
+    "pleaseEnter6Digits": "Введите 6 цифр, чтобы включить блокировку приложения.",
+    "disableAppLock": "Отключить блокировку приложения",
+    "disableAppLockAreYouSure": "Вы уверены, что хотите отключить блокировку приложения?",
+    "enableBiometrics": "Включить биометрическую аутентификацию",
+    "disableBiometrics": "Отключить биометрическую аутентификацию",
+    "biometricsDescription": "Биометрическая аутентификация позволяет разблокировать приложение по лицу или отпечатку пальца. Доступные способы зависят от устройства.",
+    "useAppLock": "Использовать блокировку приложения",
+    "unlockWithBiometrics": "Разблокировать с помощью биометрии",
+    "resetPin": "Сбросить PIN-код",
+    "forwardCountMessages": "Переслать {count, plural, =1{сообщение} one{{count} сообщение} few{{count} сообщения} many{{count} сообщений} other{{count} сообщения}}?",
+    "@forwardCountMessages": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "loadingMessages": "Загрузка сообщений…",
+    "buildDoesNotSupportFirebase": "Эта сборка не поддерживает Firebase Cloud Messaging.",
+    "unableToRegisterDeviceForFirebase": "Не удалось зарегистрировать устройство в Firebase Cloud Messaging.",
+    "unifiedPushDistributors": "Провайдеры Unified Push:",
+    "noPermissionToAddToSpace": "У вас нет прав добавлять чаты в пространство «{space}»"
 }

@@ -310,6 +310,7 @@ Future<void> showMemberActionsPopupMenu({
           displayName: user.displayName,
           avatarUrl: user.avatarUrl,
         ),
+        space: user.room.isSpace ? user.room : null,
       );
       return;
     case _MemberActions.unban:

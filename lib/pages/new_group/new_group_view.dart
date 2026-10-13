@@ -124,27 +124,6 @@ class NewGroupView extends StatelessWidget {
               duration: FluffyThemes.animationDuration,
               curve: FluffyThemes.animationCurve,
               child: controller.createGroupType == CreateGroupType.space
-                  ? const SizedBox.shrink()
-                  : SwitchListTile.adaptive(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                      ),
-                      secondary: Icon(
-                        Icons.lock_outlined,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      title: Text(
-                        L10n.of(context).enableEncryption,
-                        style: TextStyle(color: theme.colorScheme.onSurface),
-                      ),
-                      value: !controller.publicGroup,
-                      onChanged: null,
-                    ),
-            ),
-            AnimatedSize(
-              duration: FluffyThemes.animationDuration,
-              curve: FluffyThemes.animationCurve,
-              child: controller.createGroupType == CreateGroupType.space
                   ? ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 32,

@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/new_group/new_group_view.dart';
 import 'package:fluffychat/utils/file_selector.dart';
+import 'package:fluffychat/utils/matrix_sdk_extensions/matrix_locals.dart';
 import 'package:fluffychat/widgets/matrix.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -81,6 +82,8 @@ class NewGroupController extends State<NewGroup> {
           ? sdk.CreateRoomPreset.publicChat
           : sdk.CreateRoomPreset.privateChat,
       groupName: nameController.text.isNotEmpty ? nameController.text : null,
+      // Сервер запрещает шифрование (m.room.encryption: 999)
+      enableEncryption: false,
       initialState: [
         if (avatar != null)
           sdk.StateEvent(
@@ -147,6 +150,29 @@ class NewGroupController extends State<NewGroup> {
         loading = true;
         error = null;
       });
+
+      // Без права на m.space.child чат не создаём: иначе он останется
+      // вне пространства
+      final spaceId = widget.spaceId;
+      if (spaceId != null) {
+        final space = client.getRoomById(spaceId);
+        if (space == null) {
+          throw Exception(
+            'Can not add group to space: Space not found $spaceId',
+          );
+        }
+        await space.postLoad();
+        if (!mounted) return;
+        if (!space.canChangeStateEvent(EventTypes.SpaceChild)) {
+          setState(() {
+            error = L10n.of(context).noPermissionToAddToSpace(
+              space.getLocalizedDisplayname(MatrixLocals(L10n.of(context))),
+            );
+            loading = false;
+          });
+          return;
+        }
+      }
 
       final avatar = this.avatar;
       avatarUrl ??= avatar == null ? null : await client.uploadContent(avatar);

@@ -30,17 +30,27 @@ class UserDialog extends StatelessWidget {
     required BuildContext context,
     required Profile profile,
     bool noProfileWarning = false,
+    Room? space,
   }) => showAdaptiveDialog(
     context: context,
     barrierDismissible: true,
     builder: (context) =>
-        UserDialog(profile, noProfileWarning: noProfileWarning),
+        UserDialog(profile, noProfileWarning: noProfileWarning, space: space),
   );
 
   final Profile profile;
   final bool noProfileWarning;
 
-  const UserDialog(this.profile, {this.noProfileWarning = false, super.key});
+  /// Пространство, из списка участников которого открыт диалог:
+  /// личный чат с пользователем привязывается к нему.
+  final Room? space;
+
+  const UserDialog(
+    this.profile, {
+    this.noProfileWarning = false,
+    this.space,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -249,18 +259,43 @@ class UserDialog extends StatelessWidget {
                     ? null
                     : () async {
                         final router = GoRouter.of(context);
+                        final space = this.space;
+                        var inSpace = false;
                         final roomIdResult = await showFutureLoadingDialog(
                           context: context,
-                          future: () => client.startDirectChat(
-                            profile.userId,
-                            // Сервер запрещает шифрование (m.room.encryption: 999)
-                            enableEncryption: false,
-                          ),
+                          future: () async {
+                            final roomId = await client.startDirectChat(
+                              profile.userId,
+                              // Сервер запрещает шифрование (m.room.encryption: 999)
+                              enableEncryption: false,
+                            );
+                            if (space == null) return roomId;
+                            // Без m.room.power_levels проверка прав ниже
+                            // ошибочно разрешает действие
+                            await space.postLoad();
+                            inSpace = space.spaceChildren.any(
+                              (child) => child.roomId == roomId,
+                            );
+                            // Привязать к пространству может только тот,
+                            // у кого есть право на m.space.child
+                            if (!inSpace &&
+                                space.canChangeStateEvent(
+                                  EventTypes.SpaceChild,
+                                )) {
+                              await space.setSpaceChild(roomId);
+                              inSpace = true;
+                            }
+                            return roomId;
+                          },
                         );
                         final roomId = roomIdResult.result;
                         if (roomId == null) return;
                         if (context.mounted) Navigator.of(context).pop();
-                        router.go('/rooms/$roomId');
+                        router.go(
+                          inSpace
+                              ? '/rooms/$roomId?spaceId=${space!.id}'
+                              : '/rooms/$roomId',
+                        );
                       },
                 child: Text(
                   directChatRoomId == null

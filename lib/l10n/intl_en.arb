@@ -2781,5 +2781,14 @@
     "loadingMessages": "Loading messages...",
     "buildDoesNotSupportFirebase": "This build does not support firebase cloud messaging.",
     "unableToRegisterDeviceForFirebase": "Unable to register device for firebase cloud messaging.",
-    "unifiedPushDistributors": "Unified Push distributors:"
+    "unifiedPushDistributors": "Unified Push distributors:",
+    "noPermissionToAddToSpace": "You don't have permission to add chats to the space \"{space}\"",
+    "@noPermissionToAddToSpace": {
+        "type": "String",
+        "placeholders": {
+            "space": {
+                "type": "String"
+            }
+        }
+    }
 }
