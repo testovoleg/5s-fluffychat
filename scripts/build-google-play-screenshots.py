@@ -21,7 +21,8 @@ def alpha_crop(path: Path) -> Image.Image:
     return image.crop(image.getchannel("A").getbbox())
 
 
-logo = alpha_crop(ROOT / "assets/logo/img/logo_foreground.png")
+# logo_foreground.png is the white mark for the Android adaptive icon; the header needs the colored one.
+logo = alpha_crop(ROOT / "assets/logo/mini/logo_mini.png")
 wordmark = alpha_crop(ROOT / "assets/logo/img/logo_font.png")
 
 
