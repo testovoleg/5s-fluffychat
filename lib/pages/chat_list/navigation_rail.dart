@@ -6,6 +6,7 @@
 import 'package:fluffychat/config/app_config.dart';
 import 'package:fluffychat/config/themes.dart';
 import 'package:fluffychat/l10n/l10n.dart';
+import 'package:fluffychat/pages/chat_list/chat_list.dart';
 import 'package:fluffychat/pages/chat_list/navi_rail_item.dart';
 import 'package:fluffychat/pages/chat_list/space_rail_order.dart';
 import 'package:fluffychat/utils/matrix_sdk_extensions/matrix_locals.dart';
@@ -139,6 +140,9 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
         avatarSize + (selectionGap + selectionBorderWidth) * 2;
 
     final spaces = _orderedSpaces();
+    final archiveRoomIds = ChatListController.archiveSpaceChildIds(
+      widget.client,
+    );
     final isChatsSelected = widget.activeSpaceId == null;
     final railWidth = FluffyThemes.isColumnMode(context)
         ? FluffyThemes.navRailWidth
@@ -165,7 +169,7 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
                         decoration: BoxDecoration(
                           borderRadius: selectedBorderRadius,
                           border: Border.all(
-                            color: theme.colorScheme.onSurface,
+                            color: theme.colorScheme.outline,
                             width: selectionBorderWidth,
                           ),
                         ),
@@ -179,7 +183,9 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
               ),
             ),
             toolTip: L10n.of(context).chats,
-            unreadBadgeFilter: (room) => true,
+            unreadBadgeFilter: (room) =>
+                !archiveRoomIds.contains(room.id) &&
+                !ChatListController.isArchiveSpace(room),
           ),
           Expanded(
             child: ReorderableListView.builder(
@@ -215,8 +221,9 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
                   toolTip: displayname,
                   isSelected: isSpaceSelected,
                   onTap: () => widget.onGoToSpaceId(space.id),
-                  unreadBadgeFilter: (room) =>
-                      spaceChildrenIds.contains(room.id),
+                  unreadBadgeFilter: ChatListController.isArchiveSpace(space)
+                      ? null
+                      : (room) => spaceChildrenIds.contains(room.id),
                   borderRadius: selectedBorderRadius,
                   showSelectionOutline: false,
                   tooltipTriggerMode: PlatformInfos.isMobile
@@ -234,7 +241,7 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
                               decoration: BoxDecoration(
                                 borderRadius: selectedBorderRadius,
                                 border: Border.all(
-                                  color: theme.colorScheme.onSurface,
+                                  color: theme.colorScheme.outline,
                                   width: selectionBorderWidth,
                                 ),
                               ),

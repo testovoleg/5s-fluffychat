@@ -173,16 +173,16 @@ class ChatListController extends State<ChatList>
 
   static const _archiveSpaceNames = {'архив', 'archive'};
 
-  bool _isArchiveSpace(Room space) {
+  static bool isArchiveSpace(Room space) {
     if (!space.isSpace) return false;
     final name = space.getLocalizedDisplayname().trim().toLowerCase();
     return _archiveSpaceNames.contains(name);
   }
 
-  Set<String> _archiveSpaceChildIds(Client client) {
+  static Set<String> archiveSpaceChildIds(Client client) {
     final ids = <String>{};
     for (final space in client.rooms) {
-      if (!_isArchiveSpace(space)) continue;
+      if (!isArchiveSpace(space)) continue;
       for (final child in space.spaceChildren) {
         final roomId = child.roomId;
         if (roomId != null) ids.add(roomId);
@@ -192,7 +192,7 @@ class ChatListController extends State<ChatList>
       if (room.isSpace || ids.contains(room.id)) continue;
       for (final parent in room.spaceParents) {
         final space = client.getRoomById(parent.roomId ?? '');
-        if (space != null && _isArchiveSpace(space)) {
+        if (space != null && isArchiveSpace(space)) {
           ids.add(room.id);
           break;
         }
@@ -202,7 +202,7 @@ class ChatListController extends State<ChatList>
   }
 
   bool Function(Room) getRoomFilterByActiveFilter(ActiveFilter activeFilter) {
-    final archiveRoomIds = _archiveSpaceChildIds(Matrix.of(context).client);
+    final archiveRoomIds = archiveSpaceChildIds(Matrix.of(context).client);
     switch (activeFilter) {
       case ActiveFilter.allChats:
         return (room) => !room.isSpace && !archiveRoomIds.contains(room.id);

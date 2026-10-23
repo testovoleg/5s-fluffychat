@@ -31,13 +31,26 @@ class UnreadRoomsBadge extends StatelessWidget {
         .length;
     return b.Badge(
       badgeStyle: b.BadgeStyle(
+        shape: b.BadgeShape.square,
+        borderRadius: BorderRadius.circular(8),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2.5),
         badgeColor: theme.colorScheme.primary,
-        elevation: 4,
-        borderSide: BorderSide(color: theme.colorScheme.surface, width: 2),
+        elevation: 1,
       ),
-      badgeContent: Text(
-        unreadCount.toString(),
-        style: TextStyle(color: theme.colorScheme.onPrimary, fontSize: 12),
+      // minWidth keeps single-digit badges round; longer counts become a pill.
+      badgeContent: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 7),
+        child: Text(
+          unreadCount > 99 ? '99+' : unreadCount.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: theme.colorScheme.onPrimary,
+            fontSize: 10,
+            fontWeight: FontWeight.w500,
+            height: 1,
+            leadingDistribution: TextLeadingDistribution.even,
+          ),
+        ),
       ),
       showBadge: unreadCount != 0,
       badgeAnimation: const b.BadgeAnimation.scale(),

@@ -49,6 +49,8 @@ class NaviRailItem extends StatelessWidget {
           height: 52,
           width: FluffyThemes.navRailWidth,
           child: Stack(
+            // The unread badge and its shadow may reach past the item edges.
+            clipBehavior: Clip.none,
             children: [
               Positioned(
                 top: 18,
@@ -95,8 +97,8 @@ class NaviRailItem extends StatelessWidget {
                             : UnreadRoomsBadge(
                                 filter: unreadBadgeFilter,
                                 badgePosition: BadgePosition.topEnd(
-                                  top: -8,
-                                  end: -8,
+                                  top: -3,
+                                  end: -3,
                                 ),
                                 child: icon,
                               ),
