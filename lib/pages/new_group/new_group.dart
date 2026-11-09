@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/new_group/new_group_view.dart';
+import 'package:fluffychat/utils/chat_api_room_space.dart';
 import 'package:fluffychat/utils/file_selector.dart';
 import 'package:fluffychat/utils/matrix_sdk_extensions/matrix_locals.dart';
 import 'package:fluffychat/widgets/matrix.dart';
@@ -132,6 +133,25 @@ class NewGroupController extends State<NewGroup> {
         throw Exception('Can not add group to space: Space not found $spaceId');
       }
       await activeSpace.postLoad();
+      // Без права на m.space.child чат привязывает chat-api. Комната уже
+      // создана: при отказе chat-api не прерываем сценарий, иначе повторное
+      // нажатие создаст дубль
+      if (!activeSpace.canChangeStateEvent(EventTypes.SpaceChild)) {
+        try {
+          await attachRoomToSpaceByChatApi(roomId: roomId, spaceId: spaceId);
+        } catch (e, s) {
+          Logs().w('Unable to add group to space by chat api', e, s);
+          if (!mounted) return;
+          final spaceName = activeSpace.getLocalizedDisplayname(
+            MatrixLocals(L10n.of(context)),
+          );
+          final message = L10n.of(context).unableToAddChatToSpace(spaceName);
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
+        }
+        return;
+      }
       await activeSpace.setSpaceChild(roomId);
     }
   }
@@ -151,8 +171,9 @@ class NewGroupController extends State<NewGroup> {
         error = null;
       });
 
-      // Без права на m.space.child чат не создаём: иначе он останется
-      // вне пространства
+      // Без права на m.space.child чат привязывает chat-api (см. _addToSpace),
+      // а подпространство chat-api не привязывает: его без права не создаём,
+      // иначе оно останется вне пространства
       final spaceId = widget.spaceId;
       if (spaceId != null) {
         final space = client.getRoomById(spaceId);
@@ -163,7 +184,8 @@ class NewGroupController extends State<NewGroup> {
         }
         await space.postLoad();
         if (!mounted) return;
-        if (!space.canChangeStateEvent(EventTypes.SpaceChild)) {
+        if (createGroupType == CreateGroupType.space &&
+            !space.canChangeStateEvent(EventTypes.SpaceChild)) {
           setState(() {
             error = L10n.of(context).noPermissionToAddToSpace(
               space.getLocalizedDisplayname(MatrixLocals(L10n.of(context))),

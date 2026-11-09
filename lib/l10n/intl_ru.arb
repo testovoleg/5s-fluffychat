@@ -2778,5 +2778,6 @@
     "buildDoesNotSupportFirebase": "Эта сборка не поддерживает Firebase Cloud Messaging.",
     "unableToRegisterDeviceForFirebase": "Не удалось зарегистрировать устройство в Firebase Cloud Messaging.",
     "unifiedPushDistributors": "Провайдеры Unified Push:",
-    "noPermissionToAddToSpace": "У вас нет прав добавлять чаты в пространство «{space}»"
+    "noPermissionToAddToSpace": "У вас нет прав добавлять чаты в пространство «{space}»",
+    "unableToAddChatToSpace": "Чат создан, но добавить его в пространство «{space}» не удалось"
 }

@@ -5,6 +5,7 @@
 
 import 'package:fluffychat/config/themes.dart';
 import 'package:fluffychat/l10n/l10n.dart';
+import 'package:fluffychat/utils/chat_api_room_space.dart';
 import 'package:fluffychat/utils/date_time_extension.dart';
 import 'package:fluffychat/utils/fluffy_share.dart';
 import 'package:fluffychat/widgets/adaptive_dialogs/adaptive_dialog_action.dart';
@@ -276,14 +277,31 @@ class UserDialog extends StatelessWidget {
                             inSpace = space.spaceChildren.any(
                               (child) => child.roomId == roomId,
                             );
-                            // Привязать к пространству может только тот,
-                            // у кого есть право на m.space.child
+                            // С правом на m.space.child привязываем сами,
+                            // без права — через chat-api
                             if (!inSpace &&
                                 space.canChangeStateEvent(
                                   EventTypes.SpaceChild,
                                 )) {
                               await space.setSpaceChild(roomId);
                               inSpace = true;
+                            } else if (!inSpace) {
+                              // Существующий личный чат может уже быть
+                              // в другом пространстве: тогда chat-api
+                              // откажет, и чат откроется вне пространства
+                              try {
+                                await attachRoomToSpaceByChatApi(
+                                  roomId: roomId,
+                                  spaceId: space.id,
+                                );
+                                inSpace = true;
+                              } catch (e, s) {
+                                Logs().w(
+                                  'Unable to add chat to space by chat api',
+                                  e,
+                                  s,
+                                );
+                              }
                             }
                             return roomId;
                           },

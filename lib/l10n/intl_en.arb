@@ -2790,5 +2790,14 @@
                 "type": "String"
             }
         }
+    },
+    "unableToAddChatToSpace": "The chat is created, but it could not be added to the space \"{space}\"",
+    "@unableToAddChatToSpace": {
+        "type": "String",
+        "placeholders": {
+            "space": {
+                "type": "String"
+            }
+        }
     }
 }
