@@ -15,6 +15,12 @@ abstract class FluffyThemes {
 
   static const double navRailWidth = 50.0;
 
+  /// Лёгкая тень значка пространства на аватаре чата (вместо обводки)
+  static const List<BoxShadow> spaceBadgeShadow = [
+    BoxShadow(color: Color(0x80000000), blurRadius: 3, offset: Offset(0, 1)),
+    BoxShadow(color: Color(0x73000000), blurRadius: 1),
+  ];
+
   static bool isColumnModeByWidth(double width) =>
       width > columnWidth * 2 + navRailWidth;
 

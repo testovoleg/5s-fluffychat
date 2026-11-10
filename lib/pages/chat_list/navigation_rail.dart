@@ -163,21 +163,22 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
+                  // Выбранный пункт — тоновая подложка, без рамки
                   if (isChatsSelected)
                     Positioned.fill(
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           borderRadius: selectedBorderRadius,
-                          border: Border.all(
-                            color: theme.colorScheme.outline,
-                            width: selectionBorderWidth,
-                          ),
+                          color: theme.colorScheme.primaryContainer,
                         ),
                       ),
                     ),
                   Icon(
                     isChatsSelected ? Icons.forum : Icons.forum_outlined,
                     size: 22,
+                    color: isChatsSelected
+                        ? theme.colorScheme.onPrimaryContainer
+                        : null,
                   ),
                 ],
               ),
@@ -240,10 +241,7 @@ class _SpacesRailBodyState extends State<_SpacesRailBody> {
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 borderRadius: selectedBorderRadius,
-                                border: Border.all(
-                                  color: theme.colorScheme.outline,
-                                  width: selectionBorderWidth,
-                                ),
+                                color: theme.colorScheme.primaryContainer,
                               ),
                             ),
                           ),

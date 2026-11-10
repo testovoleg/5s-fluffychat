@@ -5,7 +5,8 @@
 import 'package:flutter/foundation.dart';
 
 import 'pwa_installer_stub.dart'
-    if (dart.library.js_interop) 'pwa_installer_web.dart' as impl;
+    if (dart.library.js_interop) 'pwa_installer_web.dart'
+    as impl;
 
 /// Helps install the web app as a PWA on supported browsers (Chrome, Edge, …).
 abstract final class PwaInstaller {

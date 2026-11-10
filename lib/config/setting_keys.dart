@@ -60,10 +60,7 @@ enum AppSettings<T> {
   emojiSuggestionLocale<String>('emoji_suggestion_locale', ''),
   enableSoftLogout<bool>('chat.fluffy.enable_soft_logout', false),
   enableMatrixNativeOIDC<bool>('chat.fluffy.enable_matrix_native_oidc', false),
-  presetHomeserver<String>(
-    'chat.fluffy.preset_homeserver',
-    'm.5systems.ru',
-  ),
+  presetHomeserver<String>('chat.fluffy.preset_homeserver', 'm.5systems.ru'),
   welcomeText<String>('chat.fluffy.welcome_text', ''),
   website<String>('chat.fluffy.website_url', 'https://fluffychat.im'),
   logoUrl<String>(
@@ -79,7 +76,10 @@ enum AppSettings<T> {
   webNotificationSound<bool>('chat.fluffy.web_notification_sound', true),
   chatFilter<String>('chat.fluffy.chat_filter', 'allChats'),
   hideRoomsInSpaces<bool>('chat.fluffy.hideRoomsInSpaces', false),
-  chatListSpaceBadgeNotch<bool>('chat.fluffy.chat_list_space_badge_notch', true),
+  chatListSpaceBadgeNotch<bool>(
+    'chat.fluffy.chat_list_space_badge_notch',
+    false,
+  ),
   showThumbnailsInTimeline<bool>('chat.fluffy.showThumbnailsInTimeline', true);
 
   final String key;

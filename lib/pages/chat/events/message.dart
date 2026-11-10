@@ -141,14 +141,14 @@ class Message extends StatelessWidget {
         : MainAxisAlignment.start;
 
     final displayEvent = event.getDisplayEvent(timeline);
-    const hardCorner = Radius.circular(3);
-    const roundedCorner = Radius.circular(AppConfig.borderRadius);
+    // Скругление 20; со стороны отправителя нижний угол всегда 6, верхний —
+    // 6, если выше сообщение того же отправителя (nextEvent — событие выше)
+    const hardCorner = Radius.circular(6);
+    const roundedCorner = Radius.circular(20);
     final borderRadius = BorderRadius.only(
-      topLeft: !ownMessage ? hardCorner : roundedCorner,
+      topLeft: !ownMessage && nextEventSameSender ? hardCorner : roundedCorner,
       topRight: ownMessage && nextEventSameSender ? hardCorner : roundedCorner,
-      bottomLeft: !ownMessage && previousEventSameSender
-          ? hardCorner
-          : roundedCorner,
+      bottomLeft: !ownMessage ? hardCorner : roundedCorner,
       bottomRight: ownMessage ? hardCorner : roundedCorner,
     );
     const avatarSize = Avatar.defaultSize;
@@ -160,6 +160,9 @@ class Message extends StatelessWidget {
         }.contains(event.messageType) &&
         event.fileDescription == null &&
         !event.redacted);
+    // Время — внутри пузыря, справа внизу; снаружи — только у выделенного
+    // (подробное) и у картинок/видео без пузыря
+    final timeInBubble = !noBubble && event.status.isSent;
 
     if (ownMessage) {
       color = displayEvent.status.isError
@@ -490,15 +493,21 @@ class Message extends StatelessWidget {
                                                   );
                                                 },
                                               ),
-                                            MessageContent(
-                                              displayEvent,
-                                              textColor: textColor,
-                                              linkColor: linkColor,
-                                              onInfoTab: onInfoTab,
-                                              borderRadius: borderRadius,
-                                              timeline: timeline,
-                                              selected: selected,
-                                              bigEmojis: bigEmojis,
+                                            _TimeInBubble(
+                                              show: timeInBubble,
+                                              time: event.originServerTs
+                                                  .localizedTimeOfDay(context),
+                                              color: textColor.withAlpha(160),
+                                              child: MessageContent(
+                                                displayEvent,
+                                                textColor: textColor,
+                                                linkColor: linkColor,
+                                                onInfoTab: onInfoTab,
+                                                borderRadius: borderRadius,
+                                                timeline: timeline,
+                                                selected: selected,
+                                                bigEmojis: bigEmojis,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -532,9 +541,10 @@ class Message extends StatelessWidget {
                               children: [
                                 const SizedBox(width: 8),
                                 if (event.status.isSent &&
-                                    (displayTime ||
-                                        !previousEventSameSender ||
-                                        selected))
+                                    (selected ||
+                                        (!timeInBubble &&
+                                            (displayTime ||
+                                                !previousEventSameSender))))
                                   Text(
                                     ' ${selected ? event.originServerTs.localizedDetailedTime(context) : event.originServerTs.localizedTimeOfDay(context)}',
                                     style: TextStyle(
@@ -966,6 +976,47 @@ class __AnimateInState extends State<_AnimateIn> {
       duration: FluffyThemes.animationDuration,
       curve: FluffyThemes.animationCurve,
       child: _animationFinished ? widget.child : const SizedBox.shrink(),
+    );
+  }
+}
+
+/// Время сообщения внутри пузыря: справа внизу, под содержимым.
+/// Stack не растягивает пузырь (Align в Column растянул бы его до maxWidth);
+/// minWidth — чтобы время не вылезало за край короткого пузыря.
+class _TimeInBubble extends StatelessWidget {
+  final bool show;
+  final String time;
+  final Color color;
+  final Widget child;
+
+  const _TimeInBubble({
+    required this.show,
+    required this.time,
+    required this.color,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (!show) return child;
+    return Stack(
+      children: [
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 64),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: child,
+          ),
+        ),
+        Positioned(
+          right: 12,
+          bottom: 6,
+          child: Text(
+            time,
+            style: TextStyle(fontSize: 11, height: 1, color: color),
+          ),
+        ),
+      ],
     );
   }
 }

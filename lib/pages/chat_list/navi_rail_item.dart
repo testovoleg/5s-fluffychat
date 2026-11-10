@@ -52,23 +52,8 @@ class NaviRailItem extends StatelessWidget {
             // The unread badge and its shadow may reach past the item edges.
             clipBehavior: Clip.none,
             children: [
-              Positioned(
-                top: 18,
-                bottom: 18,
-                left: 0,
-                child: AnimatedContainer(
-                  width: isSelected ? 3 : 0,
-                  duration: FluffyThemes.animationDuration,
-                  curve: FluffyThemes.animationCurve,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(90),
-                      bottomRight: Radius.circular(90),
-                    ),
-                  ),
-                ),
-              ),
+              // Выбранный пункт отмечает подложка самого значка
+              // (navigation_rail.dart), без полоски слева
               Center(
                 child: AnimatedScale(
                   scale: hovered ? 1.1 : 1.0,

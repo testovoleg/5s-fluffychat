@@ -31,6 +31,7 @@ class MxcImage extends StatefulWidget {
   final String? cacheName;
   final Client? client;
   final BorderRadius borderRadius;
+
   /// Pixel size used when requesting a thumbnail. Independent from [width]/[height]
   /// so avatars can stay small on screen while downloading a sharp image.
   final double? thumbnailSize;
@@ -193,18 +194,17 @@ class _MxcImageState extends State<MxcImage> {
                     : widget.height == null ||
                           widget.width! >= (widget.height ?? 0)
                     ? (widget.width! *
-                            MediaQuery.devicePixelRatioOf(context) *
-                            2)
-                        .round()
+                              MediaQuery.devicePixelRatioOf(context) *
+                              2)
+                          .round()
                     : null,
                 cacheHeight: widget.height == null
                     ? null
-                    : widget.width != null &&
-                          widget.height! > widget.width!
+                    : widget.width != null && widget.height! > widget.width!
                     ? (widget.height! *
-                            MediaQuery.devicePixelRatioOf(context) *
-                            2)
-                        .round()
+                              MediaQuery.devicePixelRatioOf(context) *
+                              2)
+                          .round()
                     : null,
                 errorBuilder: (context, e, s) {
                   Logs().d('Unable to render mxc image', e, s);

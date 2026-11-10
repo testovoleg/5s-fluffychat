@@ -369,8 +369,7 @@ class _SpaceViewState extends State<SpaceView> {
     final l10n = L10n.of(context);
 
     final room = Matrix.of(context).client.getRoomById(widget.spaceId);
-    final displayname =
-        room?.getLocalizedDisplayname() ?? l10n.nothingFound;
+    final displayname = room?.getLocalizedDisplayname() ?? l10n.nothingFound;
     final spaceTopic = room?.topic.trim() ?? '';
     const avatarSize = AppConfig.chatListAvatarSize;
     final spaceAvatarBorderRadius = BorderRadius.circular(
@@ -561,9 +560,7 @@ class _SpaceViewState extends State<SpaceView> {
                             );
                           }
                           final item = filteredChildren[i];
-                          var joinedRoom = room.client.getRoomById(
-                            item.roomId,
-                          );
+                          var joinedRoom = room.client.getRoomById(item.roomId);
                           final childDisplayname =
                               item.name ??
                               item.canonicalAlias ??
@@ -609,8 +606,7 @@ class _SpaceViewState extends State<SpaceView> {
                                         )
                                       : null,
                                   leading:
-                                      hovered &&
-                                          (isAdmin || joinedRoom != null)
+                                      hovered && (isAdmin || joinedRoom != null)
                                       ? SizedBox.square(
                                           dimension: avatarSize,
                                           child: IconButton(
@@ -666,9 +662,7 @@ class _SpaceViewState extends State<SpaceView> {
                                     children: [
                                       Expanded(
                                         child: Opacity(
-                                          opacity: joinedRoom == null
-                                              ? 0.5
-                                              : 1,
+                                          opacity: joinedRoom == null ? 0.5 : 1,
                                           child: Text(
                                             childDisplayname,
                                             maxLines: 1,
@@ -690,8 +684,7 @@ class _SpaceViewState extends State<SpaceView> {
                                         UnreadBubble(room: joinedRoom)
                                       else
                                         TextButton(
-                                          onPressed: () =>
-                                              _joinChildRoom(item),
+                                          onPressed: () => _joinChildRoom(item),
                                           child: Text(l10n.join),
                                         ),
                                     ],

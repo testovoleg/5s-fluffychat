@@ -485,9 +485,7 @@ Future<void> _setShortcut(
 
 extension on Client {
   Future<Uint8List?> tryDownloadNotificationAvatar(Uri? avatar) async {
-    if (avatar == null ||
-        !avatar.isScheme('mxc') ||
-        avatar.host.isEmpty) {
+    if (avatar == null || !avatar.isScheme('mxc') || avatar.host.isEmpty) {
       return null;
     }
     try {

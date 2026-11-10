@@ -17,9 +17,7 @@ class OidcPasswordTokens {
 
   factory OidcPasswordTokens.fromJson(Map<String, dynamic> json) {
     final data = json['data'];
-    final map = data is Map
-        ? Map<String, dynamic>.from(data)
-        : json;
+    final map = data is Map ? Map<String, dynamic>.from(data) : json;
     final accessToken = _readString(map, const ['access_token', 'accessToken']);
     if (accessToken == null || accessToken.isEmpty) {
       throw FormatException('OIDC login response is missing access_token');

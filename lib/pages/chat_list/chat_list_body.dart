@@ -139,16 +139,24 @@ class ChatListViewBody extends StatelessWidget {
                             .map(
                               (filter) => Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0,
+                                  horizontal: 3.0,
                                 ),
                                 child: Center(
-                                  child: FilterChip(
+                                  child: _ListFilterChip(
                                     selected: filter == controller.activeFilter,
-                                    onSelected: (_) => controller
+                                    onSelected: () => controller
                                         .setActiveFilter(filter, null),
-                                    label: Text(
-                                      filter.toLocalizedString(context),
-                                    ),
+                                    label: filter.toLocalizedString(context),
+                                    count: filter == ActiveFilter.unread
+                                        ? client.rooms
+                                              .where(
+                                                controller
+                                                    .getRoomFilterByActiveFilter(
+                                                      ActiveFilter.unread,
+                                                    ),
+                                              )
+                                              .length
+                                        : null,
                                   ),
                                 ),
                               ),
@@ -156,16 +164,16 @@ class ChatListViewBody extends StatelessWidget {
                         ...controller.roomTags.entries.map(
                           (entry) => Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0,
+                              horizontal: 3.0,
                             ),
                             child: Center(
-                              child: FilterChip(
+                              child: _ListFilterChip(
                                 selected: entry.key == controller.activeTag,
-                                onSelected: (_) => controller.setActiveFilter(
+                                onSelected: () => controller.setActiveFilter(
                                   ActiveFilter.tag,
                                   entry.key,
                                 ),
-                                label: Text(entry.key.replaceFirst('u.', '')),
+                                label: entry.key.replaceFirst('u.', ''),
                               ),
                             ),
                           ),
@@ -221,6 +229,62 @@ class ChatListViewBody extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+/// Фильтр над списком чатов: компактная таблетка с рамкой, выбранный —
+/// с заливкой primaryContainer; [count] — число справа (у «Непрочитанных»)
+class _ListFilterChip extends StatelessWidget {
+  final bool selected;
+  final VoidCallback onSelected;
+  final String label;
+  final int? count;
+
+  const _ListFilterChip({
+    required this.selected,
+    required this.onSelected,
+    required this.label,
+    this.count,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final count = this.count;
+    return FilterChip(
+      selected: selected,
+      onSelected: (_) => onSelected(),
+      showCheckmark: false,
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      backgroundColor: Colors.transparent,
+      selectedColor: theme.colorScheme.primaryContainer,
+      shape: const StadiumBorder(),
+      side: selected
+          ? BorderSide.none
+          : BorderSide(color: theme.colorScheme.outlineVariant),
+      labelStyle: TextStyle(
+        fontSize: 13,
+        color: selected
+            ? theme.colorScheme.onPrimaryContainer
+            : theme.colorScheme.onSurfaceVariant,
+      ),
+      label: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(text: label),
+            if (count != null && count > 0)
+              TextSpan(
+                text: '  $count',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

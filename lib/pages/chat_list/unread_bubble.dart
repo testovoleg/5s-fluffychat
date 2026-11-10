@@ -25,7 +25,7 @@ class UnreadBubble extends StatelessWidget {
       duration: FluffyThemes.animationDuration,
       curve: FluffyThemes.animationCurve,
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 7),
+      padding: const EdgeInsets.symmetric(horizontal: 6),
       height: unreadBubbleSize,
       width: !hasNotifications && !unread && !room.hasNewMessages
           ? 0
@@ -48,8 +48,8 @@ class UnreadBubble extends StatelessWidget {
                     : hasNotifications
                     ? theme.colorScheme.onPrimary
                     : theme.colorScheme.onPrimaryContainer,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
               ),
               textAlign: .center,
             )

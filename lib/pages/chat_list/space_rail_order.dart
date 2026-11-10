@@ -7,8 +7,7 @@ import 'package:fluffychat/config/setting_keys.dart';
 import 'package:matrix/matrix.dart';
 
 abstract class SpaceRailOrder {
-  static String _key(String userId) =>
-      'chat.fluffy.space_rail_order.$userId';
+  static String _key(String userId) => 'chat.fluffy.space_rail_order.$userId';
 
   static List<String> load(String userId) =>
       AppSettings.store.getStringList(_key(userId)) ?? const [];

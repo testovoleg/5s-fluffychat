@@ -20,11 +20,7 @@ class EmptyChatsPlaceholder extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.forum_outlined,
-              size: 48,
-              color: mutedColor,
-            ),
+            Icon(Icons.forum_outlined, size: 48, color: mutedColor),
             const SizedBox(height: 16),
             Text(
               L10n.of(context).noChatsAvailableYet,

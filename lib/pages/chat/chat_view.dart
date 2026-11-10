@@ -101,7 +101,7 @@ class ChatView extends StatelessWidget {
                 backgroundColor: controller.selectedEvents.isEmpty
                     ? controller.activeThreadId != null
                           ? theme.colorScheme.secondaryContainer
-                          : theme.colorScheme.surface.withAlpha(240)
+                          : theme.colorScheme.surfaceContainer.withAlpha(240)
                     : theme.colorScheme.tertiaryContainer,
                 automaticallyImplyLeading: false,
                 leading: controller.selectMode
@@ -383,7 +383,7 @@ class ChatView extends StatelessWidget {
                                                   .tertiaryContainer
                                             : theme
                                                   .colorScheme
-                                                  .surfaceContainer,
+                                                  .surfaceContainerHigh,
                                         borderRadius: BorderRadius.circular(32),
                                         child:
                                             controller.room.isAbandonedDMRoom ==

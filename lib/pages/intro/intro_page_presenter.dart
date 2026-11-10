@@ -128,10 +128,7 @@ class _IntroPagePresenterState extends State<IntroPagePresenter> {
         await client.checkHomeserver(homeserver);
       }
       if (!mounted) return;
-      context.go(
-        '${GoRouterState.of(context).uri.path}/login',
-        extra: client,
-      );
+      context.go('${GoRouterState.of(context).uri.path}/login', extra: client);
     } catch (e, s) {
       Logs().w('Unable to open password login', e, s);
       if (!mounted) return;

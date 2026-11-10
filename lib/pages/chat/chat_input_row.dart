@@ -255,22 +255,6 @@ class ChatInputRow extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    height: height,
-                    width: 48,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      tooltip: L10n.of(context).emojis,
-                      color: theme.colorScheme.onPrimaryContainer,
-                      icon: Icon(
-                        controller.showEmojiPicker
-                            ? Icons.keyboard
-                            : Icons.add_reaction_outlined,
-                        key: ValueKey(controller.showEmojiPicker),
-                      ),
-                      onPressed: controller.emojiPickerAction,
-                    ),
-                  ),
                   if (Matrix.of(context).isMultiAccount &&
                       Matrix.of(context).hasComplexBundles &&
                       Matrix.of(context).currentBundle!.length > 1)
@@ -330,6 +314,23 @@ class ChatInputRow extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // Смайлы — справа от текста, рядом с кнопкой отправки
+                  Container(
+                    height: height,
+                    width: 48,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      tooltip: L10n.of(context).emojis,
+                      color: theme.colorScheme.onPrimaryContainer,
+                      icon: Icon(
+                        controller.showEmojiPicker
+                            ? Icons.keyboard
+                            : Icons.add_reaction_outlined,
+                        key: ValueKey(controller.showEmojiPicker),
+                      ),
+                      onPressed: controller.emojiPickerAction,
+                    ),
+                  ),
                   Container(
                     height: height,
                     width: height,
@@ -365,8 +366,8 @@ class ChatInputRow extends StatelessWidget {
                               onLongPress: () => recordingViewModel
                                   .startRecording(controller.room),
                               style: IconButton.styleFrom(
-                                backgroundColor: theme.bubbleColor,
-                                foregroundColor: theme.onBubbleColor,
+                                backgroundColor: theme.colorScheme.primary,
+                                foregroundColor: theme.colorScheme.onPrimary,
                               ),
                               icon: Icon(
                                 hovered ? Icons.mic : Icons.mic_none_outlined,
@@ -378,8 +379,8 @@ class ChatInputRow extends StatelessWidget {
                             tooltip: L10n.of(context).send,
                             onPressed: controller.send,
                             style: IconButton.styleFrom(
-                              backgroundColor: theme.bubbleColor,
-                              foregroundColor: theme.onBubbleColor,
+                              backgroundColor: theme.colorScheme.primary,
+                              foregroundColor: theme.colorScheme.onPrimary,
                             ),
                             icon: const Icon(Icons.send_outlined),
                           ),

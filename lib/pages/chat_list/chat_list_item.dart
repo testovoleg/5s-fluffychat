@@ -51,8 +51,9 @@ class ChatListItem extends StatelessWidget {
     final directChatMatrixId = room.directChatMatrixID;
     final isDirectChat = directChatMatrixId != null;
     final hasNotifications = room.notificationCount > 0;
+    // Выбранная строка — нейтральная подложка, без цвета акцента
     final backgroundColor = activeChat
-        ? theme.colorScheme.secondaryContainer
+        ? theme.colorScheme.surfaceContainerHigh
         : null;
     final displayname = room.getLocalizedDisplayname(
       MatrixLocals(L10n.of(context)),
@@ -126,7 +127,7 @@ class ChatListItem extends StatelessWidget {
         horizontal: AppConfig.chatListItemOuterPadding,
       ),
       child: Material(
-        borderRadius: BorderRadius.circular(AppConfig.borderRadius),
+        borderRadius: BorderRadius.circular(AppConfig.chatListItemBorderRadius),
         clipBehavior: space != null ? Clip.none : Clip.hardEdge,
         color: backgroundColor,
         child: FutureBuilder(
@@ -149,15 +150,25 @@ class ChatListItem extends StatelessWidget {
                           Positioned(
                             right: 0,
                             bottom: 0,
-                            child: Avatar(
-                              shapeBorder: RoundedRectangleBorder(
+                            // Без выреза значок лежит на аватаре с лёгкой
+                            // тенью, без обводки цветом фона
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
                                 borderRadius: badgeBorderRadius,
+                                boxShadow: useSpaceBadgeNotch
+                                    ? null
+                                    : FluffyThemes.spaceBadgeShadow,
                               ),
-                              borderRadius: badgeBorderRadius,
-                              mxContent: space.avatar,
-                              size: AppConfig.chatListSpaceBadgeSize,
-                              name: space.getLocalizedDisplayname(),
-                              onTap: () => onLongPress?.call(context),
+                              child: Avatar(
+                                shapeBorder: RoundedRectangleBorder(
+                                  borderRadius: badgeBorderRadius,
+                                ),
+                                borderRadius: badgeBorderRadius,
+                                mxContent: space.avatar,
+                                size: AppConfig.chatListSpaceBadgeSize,
+                                name: space.getLocalizedDisplayname(),
+                                onTap: () => onLongPress?.call(context),
+                              ),
                             ),
                           ),
                         Positioned(
@@ -194,7 +205,10 @@ class ChatListItem extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
-                      style: theme.textTheme.bodyLarge,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   if (isMuted)
@@ -232,7 +246,7 @@ class ChatListItem extends StatelessWidget {
                           context,
                         ),
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 12,
                           fontWeight: room.hasNewMessages
                               ? FontWeight.bold
                               : null,
@@ -304,8 +318,12 @@ class ChatListItem extends StatelessWidget {
                   ),
                   Expanded(
                     child: DefaultTextStyle(
+                      // Непрочитанное — ярче, но всё так же в одну строку
                       style: theme.textTheme.bodyMedium!.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                        fontSize: 13.5,
+                        color: hasNotifications
+                            ? theme.colorScheme.onSurface
+                            : theme.colorScheme.onSurfaceVariant,
                       ),
                       child: room.isSpace && room.membership == Membership.join
                           ? Text(
@@ -378,7 +396,7 @@ class ChatListItem extends StatelessWidget {
                                           ) ??
                                           L10n.of(context).noMessagesYet,
                                 softWrap: false,
-                                maxLines: room.notificationCount >= 1 ? 2 : 1,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   decoration: room.lastEvent?.redacted == true
@@ -426,7 +444,9 @@ class ChatListItem extends StatelessWidget {
               return InkWell(
                 onTap: onTap,
                 onLongPress: () => onLongPress?.call(context),
-                borderRadius: BorderRadius.circular(AppConfig.borderRadius),
+                borderRadius: BorderRadius.circular(
+                  AppConfig.chatListItemBorderRadius,
+                ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: AppConfig.chatListItemMinTileHeight,
@@ -445,10 +465,7 @@ class ChatListItem extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
-                            children: [
-                              title,
-                              subtitle,
-                            ],
+                            children: [title, subtitle],
                           ),
                         ),
                         ?trailing,

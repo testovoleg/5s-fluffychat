@@ -10,4 +10,4 @@ void init() {}
 
 bool get isInstalled => false;
 
-Future<void> promptInstall() async {}
+Future<void> promptInstall() => Future.value();

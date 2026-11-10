@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import 'package:fluffychat/config/app_config.dart';
 import 'package:fluffychat/config/themes.dart';
 import 'package:fluffychat/l10n/l10n.dart';
 import 'package:fluffychat/pages/chat/chat.dart';
@@ -30,6 +31,19 @@ class ChatAppBarTitle extends StatelessWidget {
         ),
       );
     }
+    // Пространство чата — как в списке чатов: последнее, где чат дочерний
+    Room? space;
+    for (final candidate in room.client.rooms) {
+      if (!candidate.isSpace) continue;
+      if (candidate.spaceChildren.any((child) => child.roomId == room.id)) {
+        space = candidate;
+      }
+    }
+    const avatarSize = 40.0;
+    const badgeSize = AppConfig.chatListSpaceBadgeSize;
+    final badgeRadius = BorderRadius.circular(
+      AppConfig.chatListSpaceBadgeCornerRadius,
+    );
     return InkWell(
       hoverColor: Colors.transparent,
       splashColor: Colors.transparent,
@@ -41,14 +55,43 @@ class ChatAppBarTitle extends StatelessWidget {
                 : context.go('/rooms/${room.id}/details'),
       child: Row(
         children: [
-          Hero(
-            tag: 'content_banner',
-            child: Avatar(
-              mxContent: room.avatar,
-              name: room.getLocalizedDisplayname(
-                MatrixLocals(L10n.of(context)),
-              ),
-              size: 32,
+          SizedBox(
+            width: avatarSize + 3,
+            height: avatarSize + 3,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Hero(
+                  tag: 'content_banner',
+                  child: Avatar(
+                    mxContent: room.avatar,
+                    name: room.getLocalizedDisplayname(
+                      MatrixLocals(L10n.of(context)),
+                    ),
+                    size: avatarSize,
+                  ),
+                ),
+                if (space != null)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: badgeRadius,
+                        boxShadow: FluffyThemes.spaceBadgeShadow,
+                      ),
+                      child: Avatar(
+                        shapeBorder: RoundedRectangleBorder(
+                          borderRadius: badgeRadius,
+                        ),
+                        borderRadius: badgeRadius,
+                        mxContent: space.avatar,
+                        size: badgeSize,
+                        name: space.getLocalizedDisplayname(),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
           const SizedBox(width: 12),
@@ -60,7 +103,10 @@ class ChatAppBarTitle extends StatelessWidget {
                   room.getLocalizedDisplayname(MatrixLocals(L10n.of(context))),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 StreamBuilder(
                   stream: room.client.onSyncStatus.stream,

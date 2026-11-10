@@ -24,10 +24,13 @@ abstract class AppConfig {
   static const double columnWidth = 360.0;
 
   /// Chat list: main avatar (chat or standalone space).
-  static const double chatListAvatarSize = 32.0;
+  static const double chatListAvatarSize = 44.0;
 
   /// Chat list row: outer horizontal padding around the tile.
-  static const double chatListItemOuterPadding = 8.0;
+  static const double chatListItemOuterPadding = 6.0;
+
+  /// Chat list row: corner radius of the tile (selected / hover background).
+  static const double chatListItemBorderRadius = 16.0;
 
   /// Chat list row: ListTile content padding (horizontal).
   static const double chatListItemContentPadding = 8.0;
@@ -40,7 +43,7 @@ abstract class AppConfig {
   static const double chatListItemMinTileHeight = 0.0;
 
   /// Chat list: corner radius for square avatars (spaces / chats in a space).
-  static const double chatListSquareCornerRadius = 8.0;
+  static const double chatListSquareCornerRadius = 13.0;
 
   /// Chat list: border around the main square avatar.
   static const double chatListSquareBorderWidth = 0.0;
@@ -53,7 +56,7 @@ abstract class AppConfig {
   static const double chatListSpaceBadgeCornerRadius = 4.0;
 
   /// Badge offset from avatar corner (negative = outside, right/bottom).
-  static const double chatListSpaceBadgeOffset = -6.0;
+  static const double chatListSpaceBadgeOffset = -4.0;
 
   /// Notch cutout width (gap between avatar and badge when notch mode is on).
   static const double chatListSpaceBadgeNotchWidth = 2.0;
@@ -66,7 +69,7 @@ abstract class AppConfig {
 
   /// Spaces navigation rail avatar.
   static const double spaceRailAvatarSize = 32.0;
-  static const double spaceRailCornerRadius = 6.0;
+  static const double spaceRailCornerRadius = 8.0;
   static const double spaceRailSelectionBorderWidth = 2.0;
   static const double spaceRailSelectionGap = 1.0;
 

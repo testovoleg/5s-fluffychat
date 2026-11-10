@@ -55,26 +55,25 @@ class ChatListHeader extends StatelessWidget implements PreferredSizeWidget {
             style: theme.textTheme.bodyLarge?.copyWith(
               color: theme.colorScheme.onSurface,
             ),
+            // Залитое поле без рамки; рамка — только в фокусе
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.transparent,
+              fillColor: theme.colorScheme.surfaceContainerHigh,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(99),
-                borderSide: BorderSide(color: theme.colorScheme.outline),
+                borderSide: BorderSide.none,
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(99),
-                borderSide: BorderSide(color: theme.colorScheme.outline),
+                borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(99),
-                borderSide: BorderSide(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+                borderSide: BorderSide(color: theme.colorScheme.outline),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 12,
+                vertical: 10,
               ),
               hintText: hide
                   ? L10n.of(context).searchChatsRooms
